@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>// ANONNEWS // CYBER NEWS NEXUS // MOBILE CHAT + SNAKE W/ DPAD</title>
+    <title>// ANONNEWS // CYBER NEXUS // LIVE CHAT + SNAKE ARCADE</title>
     <style>
         * {
             margin: 0;
@@ -69,17 +69,17 @@
             50% { opacity: 0; }
         }
 
-        /* MOBILE-FIRST FLEXIBLE GRID */
+        /* MOBILE-FIRST FLEXIBLE GRID - IMPROVED CHAT SPACE */
         .matrix-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
+            gap: 20px;
             margin-top: 8px;
         }
 
         .news-primary {
             flex: 2;
-            min-width: 260px;
+            min-width: 280px;
             background: #020802;
             border: 1px solid #1f7a1f;
             border-radius: 14px;
@@ -88,7 +88,7 @@
 
         .news-secondary {
             flex: 1.2;
-            min-width: 240px;
+            min-width: 250px;
             background: #020802;
             border: 1px solid #1f7a1f;
             border-radius: 14px;
@@ -98,22 +98,23 @@
             gap: 16px;
         }
 
-        /* CHAT PANEL + SNAKE CONTAINER */
+        /* CHAT PANEL - ENHANCED & DEDICATED SPACE */
         .chat-panel {
-            flex: 0.9;
-            min-width: 260px;
+            flex: 1.5;
+            min-width: 320px;
             background: #020802;
             border: 1px solid #1f7a1f;
             border-radius: 14px;
             padding: 16px;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 0 8px rgba(0,255,0,0.1);
         }
 
         .chat-header {
             border-bottom: 1px dashed #2c9e2c;
             padding-bottom: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -121,38 +122,45 @@
             gap: 8px;
             color: #b3ffb3;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .chat-container {
-            background: #051005;
-            border-radius: 12px;
-            padding: 10px;
+            background: #031003;
+            border-radius: 16px;
+            padding: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 350px;
+            min-height: 460px;
+            height: auto;
             border: 1px solid #2b6e2b;
             width: 100%;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 0 0 1px #2f9a2f;
         }
 
         .chatango-wrapper {
             width: 100%;
+            height: 100%;
+            min-height: 440px;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #000000;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
         }
 
         .chatango-wrapper iframe,
         .chatango-wrapper object {
-            max-width: 100%;
-            border-radius: 8px;
+            width: 100%;
+            height: 440px;
+            border: none;
+            border-radius: 12px;
+            display: block;
         }
 
-        /* SNAKE ARCADE + DPAD */
+        /* SNAKE ARCADE + DPAD - streamlined */
         .snake-arcade {
             margin-top: 20px;
             background: #030d03;
@@ -201,9 +209,11 @@
             width: 100%;
             height: auto;
             cursor: pointer;
+            max-width: 400px;
+            aspect-ratio: 1/1;
         }
 
-        /* DPAD - FULL TOUCH CONTROLS FOR MOBILE */
+        /* DPAD - FULL TOUCH CONTROLS */
         .dpad-container {
             display: flex;
             justify-content: center;
@@ -438,16 +448,18 @@
             .live-clock { font-size: 9px; }
             .ascii-header pre { font-size: 5px; }
             .news-list { max-height: 320px; }
-            .chat-container { min-height: 300px; }
-            .chat-panel, .news-primary, .news-secondary { min-width: 100%; }
+            .chat-container { min-height: 380px; }
+            .chatango-wrapper iframe { height: 380px; }
+            .chat-panel { min-width: 100%; }
+            .news-primary, .news-secondary { min-width: 100%; }
             .matrix-grid { gap: 14px; }
-            canvas#snakeCanvas { max-width: 100%; height: auto; }
             .dpad { grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(3, 56px); gap: 6px; }
             .dpad-btn { font-size: 24px; }
         }
 
         @media (max-width: 480px) {
-            .chat-container { min-height: 280px; padding: 6px; }
+            .chat-container { min-height: 340px; }
+            .chatango-wrapper iframe { height: 340px; }
             .snake-header { font-size: 0.7rem; }
             .snake-btn { padding: 5px 12px; font-size: 0.7rem; }
             .dpad { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px); gap: 5px; }
@@ -466,7 +478,7 @@
 ║ ██╔══██║██║╚██╗██║██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██║███╗██║╚════██║   ║
 ║ ██║  ██║██║ ╚████║╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚███╔███╔╝███████║   ║
 ║ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝   ║
-║        [ ANONNEWS // MOBILE HUB + ENCRYPTED CHAT + SNAKE + DPAD ]           ║
+║        [ ANONNEWS // ENCRYPTED CHAT // SNAKE + ARCADE DPAD ]                ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
         </pre>
     </div>
@@ -475,10 +487,10 @@
         <span>🟢 ANONNEWS: <span id="newsStatus">LIVE</span></span>
         <span>📡 SYNC: <span id="newsSyncTime">—</span> <span class="blink">⏺</span></span>
         <span>⏱️ <span id="liveClock" class="live-clock">--:--:--</span></span>
-        <span>💬 CHAT: <span id="chatStatus">ENCRYPTED</span></span>
-        <span>🐍 SNAKE: ACTIVE</span>
+        <span>💬 CHAT: <span id="chatStatus">ACTIVE / ENCRYPTED</span></span>
+        <span>🐍 SNAKE: READY</span>
         <span>🎮 DPAD ENABLED</span>
-        <span>📱 MOBILE READY</span>
+        <span>📱 MOBILE OPTIMIZED</span>
     </div>
 
     <div class="matrix-grid">
@@ -515,20 +527,20 @@
             </div>
         </div>
 
-        <!-- CHAT PANEL + SNAKE GAME + DPAD CONTROLS -->
+        <!-- CHAT PANEL (ENHANCED SPACE) + SNAKE GAME -->
         <div class="chat-panel">
             <div class="chat-header">
-                <span>💬 █ UNDERGROUND CHANNEL</span>
+                <span>💬 █ UNDERGROUND CHANNEL // ZERO LOGS</span>
                 <span class="blink" style="font-size:9px;">● LIVE</span>
             </div>
             <div class="chat-container" id="chatContainer">
                 <div id="chatangoWidget" class="chatango-wrapper"></div>
             </div>
             <div style="font-size: 9px; margin-top: 10px; margin-bottom: 6px; text-align: center; color: #3c9e3c;">
-                🔐 anonymous • encrypted • zero logs • mobile friendly
+                🔐 anonymous • encrypted • realtime • mobile friendly
             </div>
             
-            <!-- *************** SNAKE GAME WITH DPAD *************** -->
+            <!-- SNAKE GAME WITH DPAD INTEGRATION -->
             <div class="snake-arcade">
                 <div class="snake-header">
                     <span>🐍 █ NEXUS SNAKE // RETRO BYTE</span>
@@ -538,7 +550,7 @@
                     <canvas id="snakeCanvas" width="400" height="400" style="width:100%; height:auto; max-width:400px; aspect-ratio:1/1"></canvas>
                 </div>
                 
-                <!-- DPAD FOR MOBILE / TOUCH DEVICES -->
+                <!-- DPAD FOR TOUCH & MOBILE -->
                 <div class="dpad-container">
                     <div class="dpad" id="touchDpad">
                         <div class="dpad-btn empty"></div>
@@ -558,24 +570,24 @@
                     <button class="snake-btn" id="pauseSnakeBtn">⏸️ PAUSE</button>
                 </div>
                 <div class="mobile-swipe-hint">
-                    🎮 on-screen D-pad | keyboard arrows | touch swipe also works
+                    🎮 on-screen D-pad | keyboard arrows | swipe canvas
                 </div>
             </div>
         </div>
     </div>
     <div class="footer">
-        [ ANONNEWS v5.0 MOBILE + SNAKE + DPAD ] — perpetual sync • live headlines + encrypted chat • classic snake with touch controls
+        [ ANONNEWS v6.0 // LIVE CHAT + SNAKE ARCADE + MOBILE DPAD ] — perpetual sync • live headlines + encrypted chat • classic snake
     </div>
 </div>
 
 <script>
     (function(){
-        // ██████████████████████████████████████████████████████████████████████████
-        // ANONNEWS - MOBILE OPTIMIZED - FOREVER NEWS + CHATANGO + SNAKE (DPAD TOUCH)
-        // Live clock, BBC News + CryptoCompare, auto-refresh, chat & classic snake
-        // ██████████████████████████████████████████████████████████████████████████
+        // --------------------------------------------------------------
+        // ANONNEWS - FULLY OPTIMIZED CHAT DISPLAY + SNAKE + NEWS
+        // FIXED: Chatango widget displayed with enough space, responsive container.
+        // --------------------------------------------------------------
         
-        // ----- 1. LIVE CLOCK -----
+        // 1. LIVE CLOCK
         function initLiveClock() {
             const clockElement = document.getElementById('liveClock');
             if (!clockElement) return;
@@ -590,7 +602,7 @@
             setInterval(updateClock, 1000);
         }
         
-        // ----- 2. TIMESTAMP UPDATE -----
+        // 2. TIMESTAMP UPDATE
         function updateTimestamp() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', second:'2-digit' });
@@ -611,7 +623,7 @@
             });
         }
         
-        // ----- 3. GENERAL NEWS (BBC World) -----
+        // 3. GENERAL NEWS (BBC)
         async function fetchGeneralNews() {
             const container = document.getElementById('generalNewsList');
             if(!container) return;
@@ -651,7 +663,7 @@
             }
         }
         
-        // ----- 4. CRYPTO NEWS -----
+        // 4. CRYPTO NEWS
         async function fetchCryptoNews() {
             const container = document.getElementById('cryptoNewsList');
             if(!container) return;
@@ -686,7 +698,7 @@
             }
         }
         
-        // ----- 5. CRYPTO TICKER -----
+        // 5. CRYPTO TICKER
         function initCryptoMarketTicker() {
             const tickerSpan = document.getElementById('tickerText');
             if(!tickerSpan) return;
@@ -705,41 +717,49 @@
             }, 19000);
         }
         
-        // ----- 6. CHATANGO WIDGET -----
+        // 6. CHATANGO WIDGET - PROPERLY DIMENSIONED & VISIBLE
         function loadChatangoWidget() {
             return new Promise((resolve, reject) => {
                 const widgetContainer = document.getElementById('chatangoWidget');
                 if (!widgetContainer) return reject('No container');
                 widgetContainer.innerHTML = '';
+                // Create iframe-like embed using official chatango embed script with fixed dimensions
                 const script = document.createElement('script');
                 script.id = "cid0020000437397109464";
                 script.setAttribute('data-cfasync', 'false');
                 script.async = true;
                 script.src = "//st.chatango.com/js/gz/emb.js";
-                script.style.width = "100%";
-                script.style.height = "100%";
-                const chatConfig = {
+                const config = {
                     handle: "chat2000site",
                     arch: "js",
-                    styles: { a: "000000", b: 100, c: "33cc00", d: "000000", e: "000000", g: "009900", h: "e0e0e0", k: "000000", l: "000000", m: "000000", n: "FFFFFF", p: "10", q: "33cc00", r: 100, sbc: "33cc00" }
+                    styles: { 
+                        a: "000000", b: 100, c: "33cc00", d: "000000", 
+                        e: "000000", g: "009900", h: "e0e0e0", k: "000000", 
+                        l: "000000", m: "000000", n: "FFFFFF", p: "10", 
+                        q: "33cc00", r: 100, sbc: "33cc00" 
+                    }
                 };
-                script.textContent = JSON.stringify(chatConfig);
+                script.textContent = JSON.stringify(config);
                 script.onload = () => {
                     const chatStatusSpan = document.getElementById('chatStatus');
-                    if(chatStatusSpan) chatStatusSpan.innerText = "ACTIVE";
+                    if(chatStatusSpan) chatStatusSpan.innerText = "ACTIVE / ENCRYPTED";
                     resolve();
                 };
                 script.onerror = () => {
-                    widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ CHAT OFFLINE</div>';
+                    widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;background:#0a0f0a;">⚠️ CHAT OFFLINE — RETRY</div>';
                     reject();
                 };
                 widgetContainer.appendChild(script);
+                // additional style injection to ensure full width
+                const styleFix = document.createElement('style');
+                styleFix.textContent = '#chatangoWidget object, #chatangoWidget iframe { width:100% !important; height:100% !important; min-height:430px !important; }';
+                document.head.appendChild(styleFix);
             });
         }
         
         function ensureChatWidget() { loadChatangoWidget().catch(() => {}); }
         
-        // ----- 7. REFRESH HANDLERS -----
+        // 7. REFRESH HANDLERS
         let isRefreshing = false;
         async function refreshAllNews() {
             if (isRefreshing) return;
@@ -760,7 +780,7 @@
         
         function startAutoRefresh() { setInterval(() => { refreshAllNews(); }, 25 * 60 * 1000); }
         
-        // ----- 8. SNAKE GAME WITH DPAD INTEGRATION -----
+        // 8. SNAKE GAME + DPAD (Enhanced)
         function initSnakeGame() {
             const canvas = document.getElementById('snakeCanvas');
             if (!canvas) return;
@@ -812,8 +832,6 @@
                 });
                 ctx.fillStyle = '#ff5555';
                 ctx.fillRect(food.x * cellSize + 2, food.y * cellSize + 2, cellSize - 4, cellSize - 4);
-                ctx.fillStyle = '#ffaa55';
-                ctx.fillRect(food.x * cellSize + 5, food.y * cellSize + 5, 3, 3);
             }
             
             function moveSnake() {
@@ -901,7 +919,6 @@
                 }
             }
             
-            // Keyboard controls
             window.addEventListener('keydown', (e) => {
                 const key = e.key;
                 if (!gameActive || isPaused) return;
@@ -912,30 +929,20 @@
                 e.preventDefault();
             });
             
-            // DPAD touch events
             const dpadButtons = document.querySelectorAll('.dpad-btn[data-dir]');
             dpadButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
+                const handleDir = () => {
                     if (!gameActive || isPaused) return;
                     const dir = btn.getAttribute('data-dir');
                     if (dir === 'UP' && direction !== 'DOWN') nextDirection = 'UP';
                     else if (dir === 'DOWN' && direction !== 'UP') nextDirection = 'DOWN';
                     else if (dir === 'LEFT' && direction !== 'RIGHT') nextDirection = 'LEFT';
                     else if (dir === 'RIGHT' && direction !== 'LEFT') nextDirection = 'RIGHT';
-                });
-                btn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    if (!gameActive || isPaused) return;
-                    const dir = btn.getAttribute('data-dir');
-                    if (dir === 'UP' && direction !== 'DOWN') nextDirection = 'UP';
-                    else if (dir === 'DOWN' && direction !== 'UP') nextDirection = 'DOWN';
-                    else if (dir === 'LEFT' && direction !== 'RIGHT') nextDirection = 'LEFT';
-                    else if (dir === 'RIGHT' && direction !== 'LEFT') nextDirection = 'RIGHT';
-                });
+                };
+                btn.addEventListener('click', handleDir);
+                btn.addEventListener('touchstart', (e) => { e.preventDefault(); handleDir(); });
             });
             
-            // Swipe fallback on canvas
             let touchStart = null;
             canvas.addEventListener('touchstart', (e) => {
                 const rect = canvas.getBoundingClientRect();
@@ -966,7 +973,7 @@
             resetGame();
         }
         
-        // ----- 9. INIT -----
+        // 9. INIT ALL
         async function init() {
             initLiveClock();
             bindRefreshButtons();
