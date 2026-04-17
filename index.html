@@ -1,5 +1,138 @@
 <!DOCTYPE html>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+(function(){
+
+// ==============================
+// 🔥 REAL SUPABASE CONFIG (YOU MUST REPLACE THESE)
+// ==============================
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+// ==============================
+
+let messages = [];
+const deviceId = "dev_" + Math.random().toString(36).slice(2,10);
+
+// DOM
+const messagesBox = document.getElementById("messagesBox");
+const nickInput = document.getElementById("nickInput");
+const msgInput = document.getElementById("msgInput");
+const sendBtn = document.getElementById("sendBtn");
+const connStatus = document.getElementById("connStatus");
+const onlineCount = document.getElementById("onlineCount");
+
+// ==============================
+// SAFE HTML
+// ==============================
+function escapeHtml(str){
+    return (str || "").replace(/[&<>]/g, m => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;"
+    }[m]));
+}
+
+// ==============================
+// RENDER
+// ==============================
+function render(){
+    let html = "";
+
+    for(let msg of messages){
+        html += `
+        <div class="message-row">
+            <div class="msg-header">
+                <span class="msg-nick">> ${escapeHtml(msg.nickname)}</span>
+                <span class="msg-time">${new Date(msg.created_at).toLocaleTimeString()}</span>
+            </div>
+            <div class="msg-content">${escapeHtml(msg.message)}</div>
+        </div>
+        `;
+    }
+
+    messagesBox.innerHTML = html || "<div>No messages yet</div>";
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+// ==============================
+// LOAD MESSAGES
+// ==============================
+async function load(){
+    const { data, error } = await supabase
+        .from("chat_messages")
+        .select("*")
+        .order("created_at", { ascending: true })
+        .limit(200);
+
+    if(error){
+        console.log("LOAD ERROR:", error);
+        connStatus.innerText = "ERROR";
+        return;
+    }
+
+    messages = data || [];
+    render();
+    connStatus.innerText = "LIVE";
+}
+
+// ==============================
+// SEND MESSAGE
+// ==============================
+async function send(){
+    const nick = nickInput.value.trim() || "ANON";
+    const text = msgInput.value.trim();
+
+    if(!text) return;
+
+    const { error } = await supabase
+        .from("chat_messages")
+        .insert([{
+            nickname: nick,
+            message: text,
+            user_id: deviceId,
+            created_at: new Date().toISOString()
+        }]);
+
+    if(error){
+        console.log("SEND ERROR:", error);
+        alert(error.message);
+        return;
+    }
+
+    msgInput.value = "";
+    await load();
+}
+
+// ==============================
+// POLLING (REAL-TIME SIMULATION)
+// ==============================
+setInterval(load, 2000);
+
+// ==============================
+// EVENTS
+// ==============================
+sendBtn.onclick = send;
+
+msgInput.addEventListener("keydown", e=>{
+    if(e.key === "Enter"){
+        send();
+    }
+});
+
+// ==============================
+// INIT
+// ==============================
+load();
+
+})();
+</script>
 
 <script>
 (function(){
