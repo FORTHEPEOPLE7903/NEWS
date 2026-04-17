@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>// ANONNEWS // CYBER NEWS NEXUS // MOBILE CHAT + SNAKE</title>
+    <title>// ANONNEWS // CYBER NEWS NEXUS // MOBILE CHAT + SNAKE W/ DPAD</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* avoid accidental selection on game, but fine */
+            user-select: none; /* avoid accidental selection on game */
         }
 
         body {
@@ -98,7 +98,7 @@
             gap: 16px;
         }
 
-        /* CHAT PANEL + SNAKE CONTAINER - FULLY RESPONSIVE */
+        /* CHAT PANEL + SNAKE CONTAINER */
         .chat-panel {
             flex: 0.9;
             min-width: 260px;
@@ -136,7 +136,6 @@
             width: 100%;
         }
 
-        /* Chatango widget responsive wrapper */
         .chatango-wrapper {
             width: 100%;
             display: flex;
@@ -148,20 +147,12 @@
         }
 
         .chatango-wrapper iframe,
-        .chatango-wrapper object,
-        .chatango-wrapper embed {
+        .chatango-wrapper object {
             max-width: 100%;
             border-radius: 8px;
         }
 
-        /* Force Chatango embed to be responsive */
-        #chatangoWidget script + div,
-        .chatango-embed {
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-
-        /* ----- SNAKE GAME SECTION (BELOW CHATBOX) ----- */
+        /* SNAKE ARCADE + DPAD */
         .snake-arcade {
             margin-top: 20px;
             background: #030d03;
@@ -212,11 +203,62 @@
             cursor: pointer;
         }
 
+        /* DPAD - FULL TOUCH CONTROLS FOR MOBILE */
+        .dpad-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        .dpad {
+            display: inline-grid;
+            grid-template-columns: repeat(3, 64px);
+            grid-template-rows: repeat(3, 64px);
+            gap: 8px;
+            background: rgba(0, 20, 0, 0.7);
+            padding: 8px;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+            border: 1px solid #2f9e2f;
+        }
+
+        .dpad-btn {
+            background: #0e1f0e;
+            border: 1px solid #3cb43c;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaffaa;
+            cursor: pointer;
+            transition: 0.07s linear;
+            touch-action: manipulation;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            font-family: monospace;
+        }
+
+        .dpad-btn:active {
+            background: #2c6e2c;
+            transform: scale(0.94);
+            color: white;
+            border-color: #88ff88;
+        }
+
+        .empty {
+            background: transparent;
+            border: none;
+            pointer-events: none;
+            box-shadow: none;
+        }
+
         .snake-controls {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 14px;
+            margin-top: 12px;
             flex-wrap: wrap;
         }
 
@@ -389,7 +431,6 @@
             font-size: 11px;
         }
 
-        /* Mobile specific adjustments */
         @media (max-width: 860px) {
             body { padding: 8px; }
             .terminal { padding: 12px; }
@@ -401,13 +442,16 @@
             .chat-panel, .news-primary, .news-secondary { min-width: 100%; }
             .matrix-grid { gap: 14px; }
             canvas#snakeCanvas { max-width: 100%; height: auto; }
+            .dpad { grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(3, 56px); gap: 6px; }
+            .dpad-btn { font-size: 24px; }
         }
 
         @media (max-width: 480px) {
             .chat-container { min-height: 280px; padding: 6px; }
             .snake-header { font-size: 0.7rem; }
             .snake-btn { padding: 5px 12px; font-size: 0.7rem; }
-            .mobile-swipe-hint { font-size: 8px; }
+            .dpad { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px); gap: 5px; }
+            .dpad-btn { font-size: 20px; }
         }
     </style>
 </head>
@@ -422,7 +466,7 @@
 ║ ██╔══██║██║╚██╗██║██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██║███╗██║╚════██║   ║
 ║ ██║  ██║██║ ╚████║╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚███╔███╔╝███████║   ║
 ║ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝   ║
-║           [ ANONNEWS // MOBILE CYBER HUB + ENCRYPTED CHAT + SNAKE ]          ║
+║        [ ANONNEWS // MOBILE HUB + ENCRYPTED CHAT + SNAKE + DPAD ]           ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
         </pre>
     </div>
@@ -433,6 +477,7 @@
         <span>⏱️ <span id="liveClock" class="live-clock">--:--:--</span></span>
         <span>💬 CHAT: <span id="chatStatus">ENCRYPTED</span></span>
         <span>🐍 SNAKE: ACTIVE</span>
+        <span>🎮 DPAD ENABLED</span>
         <span>📱 MOBILE READY</span>
     </div>
 
@@ -470,7 +515,7 @@
             </div>
         </div>
 
-        <!-- CHAT PANEL + SNAKE GAME BELOW IT -->
+        <!-- CHAT PANEL + SNAKE GAME + DPAD CONTROLS -->
         <div class="chat-panel">
             <div class="chat-header">
                 <span>💬 █ UNDERGROUND CHANNEL</span>
@@ -483,7 +528,7 @@
                 🔐 anonymous • encrypted • zero logs • mobile friendly
             </div>
             
-            <!-- *************** SNAKE GAME ADDED BELOW CHATBOX *************** -->
+            <!-- *************** SNAKE GAME WITH DPAD *************** -->
             <div class="snake-arcade">
                 <div class="snake-header">
                     <span>🐍 █ NEXUS SNAKE // RETRO BYTE</span>
@@ -492,29 +537,45 @@
                 <div class="game-canvas-container">
                     <canvas id="snakeCanvas" width="400" height="400" style="width:100%; height:auto; max-width:400px; aspect-ratio:1/1"></canvas>
                 </div>
+                
+                <!-- DPAD FOR MOBILE / TOUCH DEVICES -->
+                <div class="dpad-container">
+                    <div class="dpad" id="touchDpad">
+                        <div class="dpad-btn empty"></div>
+                        <div class="dpad-btn" data-dir="UP">▲</div>
+                        <div class="dpad-btn empty"></div>
+                        <div class="dpad-btn" data-dir="LEFT">◀</div>
+                        <div class="dpad-btn" data-dir="DOWN">▼</div>
+                        <div class="dpad-btn" data-dir="RIGHT">▶</div>
+                        <div class="dpad-btn empty"></div>
+                        <div class="dpad-btn empty"></div>
+                        <div class="dpad-btn empty"></div>
+                    </div>
+                </div>
+
                 <div class="snake-controls">
                     <button class="snake-btn" id="resetSnakeBtn">⟳ RESTART</button>
                     <button class="snake-btn" id="pauseSnakeBtn">⏸️ PAUSE</button>
                 </div>
                 <div class="mobile-swipe-hint">
-                    ▲ ▼ ◀ ▶ &nbsp;&nbsp;|&nbsp;&nbsp; swipe/keys
+                    🎮 on-screen D-pad | keyboard arrows | touch swipe also works
                 </div>
             </div>
         </div>
     </div>
     <div class="footer">
-        [ ANONNEWS v5.0 MOBILE + SNAKE MODULE ] — perpetual sync • live headlines + encrypted chat • classic snake
+        [ ANONNEWS v5.0 MOBILE + SNAKE + DPAD ] — perpetual sync • live headlines + encrypted chat • classic snake with touch controls
     </div>
 </div>
 
 <script>
     (function(){
         // ██████████████████████████████████████████████████████████████████████████
-        // ANONNEWS - MOBILE OPTIMIZED - FOREVER NEWS + UPDATED CHATANGO WIDGET + SNAKE
-        // Live clock, BBC World News + CryptoCompare, auto-refresh, chat with new config
+        // ANONNEWS - MOBILE OPTIMIZED - FOREVER NEWS + CHATANGO + SNAKE (DPAD TOUCH)
+        // Live clock, BBC News + CryptoCompare, auto-refresh, chat & classic snake
         // ██████████████████████████████████████████████████████████████████████████
         
-        // ----- 1. LIVE CLOCK (UPDATES EVERY SECOND) -----
+        // ----- 1. LIVE CLOCK -----
         function initLiveClock() {
             const clockElement = document.getElementById('liveClock');
             if (!clockElement) return;
@@ -577,14 +638,10 @@
                     container.innerHTML = html;
                 } else throw new Error("RSS malformed");
             } catch(err) {
-                console.warn("General news error, using fallback");
                 const fallback = [
                     { title: "G20 agrees on global framework for AI safety and transparency", meta: "diplomatic breakthrough" },
                     { title: "European Central Bank signals rate cuts by Q3 amid easing inflation", meta: "economy & finance" },
-                    { title: "Breakthrough in nuclear fusion: new reactor achieves 150% energy gain", meta: "science & future" },
-                    { title: "International cyber taskforce dismantles major ransomware network", meta: "cybersecurity alliance" },
-                    { title: "Japan unveils next-gen maglev line: Tokyo-Osaka in 67 minutes", meta: "infrastructure innovation" },
-                    { title: "UN Climate Summit announces historic deforestation reversal pact", meta: "environment 2030" }
+                    { title: "Breakthrough in nuclear fusion: new reactor achieves 150% energy gain", meta: "science & future" }
                 ];
                 let html = '';
                 for(let story of fallback) {
@@ -617,12 +674,9 @@
                     container.innerHTML = html;
                 } else throw new Error("No crypto data");
             } catch(err) {
-                console.warn("Crypto error, using fallback");
                 const cryptoFallback = [
                     { title: "Bitcoin ETF weekly inflows hit $620M, AUM reaches record high", source: "Institutional wave" },
-                    { title: "Ethereum restaking TVL surpasses $14B as EigenLayer expands", source: "DeFi pulse" },
-                    { title: "Solana hits 2.4M daily active addresses, memecoin volume surges", source: "Network metrics" },
-                    { title: "Ripple vs SEC: Legal expert predicts final ruling within 60 days", source: "XRP momentum" }
+                    { title: "Ethereum restaking TVL surpasses $14B as EigenLayer expands", source: "DeFi pulse" }
                 ];
                 let html = '';
                 for(let item of cryptoFallback) {
@@ -632,7 +686,7 @@
             }
         }
         
-        // ----- 5. CRYPTO TICKER (dynamic) -----
+        // ----- 5. CRYPTO TICKER -----
         function initCryptoMarketTicker() {
             const tickerSpan = document.getElementById('tickerText');
             if(!tickerSpan) return;
@@ -640,8 +694,7 @@
                 "BTC $69,842 | ETH $3,527 | SOL $156",
                 "BTC $70,121 | ETH $3,598 | SOL $161",
                 "BTC $68,990 | ETH $3,482 | SOL $153",
-                "BTC $71,205 | ETH $3,674 | SOL $168",
-                "BTC $69,340 | ETH $3,512 | SOL $149"
+                "BTC $71,205 | ETH $3,674 | SOL $168"
             ];
             let idx = 0;
             setInterval(() => {
@@ -652,7 +705,7 @@
             }, 19000);
         }
         
-        // ----- 6. UPDATED CHATANGO INTEGRATION -----
+        // ----- 6. CHATANGO WIDGET -----
         function loadChatangoWidget() {
             return new Promise((resolve, reject) => {
                 const widgetContainer = document.getElementById('chatangoWidget');
@@ -665,78 +718,28 @@
                 script.src = "//st.chatango.com/js/gz/emb.js";
                 script.style.width = "100%";
                 script.style.height = "100%";
-                script.style.minWidth = "250px";
-                script.style.minHeight = "350px";
                 const chatConfig = {
                     handle: "chat2000site",
                     arch: "js",
-                    styles: {
-                        a: "000000",
-                        b: 100,
-                        c: "33cc00",
-                        d: "000000",
-                        e: "000000",
-                        g: "009900",
-                        h: "e0e0e0",
-                        k: "000000",
-                        l: "000000",
-                        m: "000000",
-                        n: "FFFFFF",
-                        p: "10",
-                        q: "33cc00",
-                        r: 100,
-                        sbc: "33cc00"
-                    }
+                    styles: { a: "000000", b: 100, c: "33cc00", d: "000000", e: "000000", g: "009900", h: "e0e0e0", k: "000000", l: "000000", m: "000000", n: "FFFFFF", p: "10", q: "33cc00", r: 100, sbc: "33cc00" }
                 };
                 script.textContent = JSON.stringify(chatConfig);
                 script.onload = () => {
                     const chatStatusSpan = document.getElementById('chatStatus');
                     if(chatStatusSpan) chatStatusSpan.innerText = "ACTIVE";
-                    setTimeout(() => {
-                        const iframes = widgetContainer.querySelectorAll('iframe');
-                        iframes.forEach(iframe => {
-                            iframe.style.width = '100%';
-                            iframe.style.maxWidth = '100%';
-                            iframe.style.height = 'auto';
-                            iframe.style.minHeight = '350px';
-                            iframe.style.borderRadius = '8px';
-                        });
-                    }, 500);
                     resolve();
                 };
                 script.onerror = () => {
-                    widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ CHAT OFFLINE // RETRY</div>';
-                    const chatStatusSpan = document.getElementById('chatStatus');
-                    if(chatStatusSpan) chatStatusSpan.innerText = "STANDBY";
+                    widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ CHAT OFFLINE</div>';
                     reject();
                 };
                 widgetContainer.appendChild(script);
-                const style = document.createElement('style');
-                style.textContent = `
-                    .chatango-wrapper iframe, .chatango-wrapper object {
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        min-width: 220px !important;
-                        border-radius: 10px !important;
-                    }
-                `;
-                document.head.appendChild(style);
             });
         }
         
-        let chatLoadAttempts = 0;
-        function ensureChatWidget() {
-            loadChatangoWidget().catch(() => {
-                setTimeout(() => {
-                    if(chatLoadAttempts < 4) {
-                        chatLoadAttempts++;
-                        ensureChatWidget();
-                    }
-                }, 7000);
-            });
-        }
+        function ensureChatWidget() { loadChatangoWidget().catch(() => {}); }
         
-        // ----- 7. REFRESH HANDLERS & AUTO UPDATE -----
+        // ----- 7. REFRESH HANDLERS -----
         let isRefreshing = false;
         async function refreshAllNews() {
             if (isRefreshing) return;
@@ -746,25 +749,18 @@
             try {
                 await Promise.allSettled([fetchGeneralNews(), fetchCryptoNews()]);
                 updateTimestamp();
-            } catch(e) { console.warn(e); }
-            finally {
-                if(statusSpan) statusSpan.innerText = "LIVE";
-                isRefreshing = false;
-            }
+            } catch(e) {}
+            finally { if(statusSpan) statusSpan.innerText = "LIVE"; isRefreshing = false; }
         }
         
         function bindRefreshButtons() {
-            const genBtn = document.getElementById('refreshGeneralBtn');
-            const cryptoBtn = document.getElementById('refreshCryptoBtn');
-            if(genBtn) genBtn.addEventListener('click', async () => { await fetchGeneralNews(); updateTimestamp(); });
-            if(cryptoBtn) cryptoBtn.addEventListener('click', async () => { await fetchCryptoNews(); updateTimestamp(); });
+            document.getElementById('refreshGeneralBtn')?.addEventListener('click', async () => { await fetchGeneralNews(); updateTimestamp(); });
+            document.getElementById('refreshCryptoBtn')?.addEventListener('click', async () => { await fetchCryptoNews(); updateTimestamp(); });
         }
         
-        function startAutoRefresh() {
-            setInterval(() => { refreshAllNews(); }, 25 * 60 * 1000);
-        }
+        function startAutoRefresh() { setInterval(() => { refreshAllNews(); }, 25 * 60 * 1000); }
         
-        // ----- 8. SNAKE GAME (MODERN CLASSIC) -----
+        // ----- 8. SNAKE GAME WITH DPAD INTEGRATION -----
         function initSnakeGame() {
             const canvas = document.getElementById('snakeCanvas');
             if (!canvas) return;
@@ -788,21 +784,17 @@
                 const freeCells = [];
                 for (let i = 0; i < gridSize; i++) {
                     for (let j = 0; j < gridSize; j++) {
-                        if (!snake.some(seg => seg.x === i && seg.y === j)) {
-                            freeCells.push({x: i, y: j});
-                        }
+                        if (!snake.some(seg => seg.x === i && seg.y === j)) freeCells.push({x: i, y: j});
                     }
                 }
                 if (freeCells.length === 0) return null;
-                const rand = Math.floor(Math.random() * freeCells.length);
-                return freeCells[rand];
+                return freeCells[Math.floor(Math.random() * freeCells.length)];
             }
             
             function drawGame() {
                 if (!ctx) return;
                 ctx.fillStyle = '#051005';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                // draw grid
                 ctx.strokeStyle = '#1c481c';
                 ctx.lineWidth = 0.5;
                 for (let i = 0; i <= gridSize; i++) {
@@ -814,25 +806,14 @@
                     ctx.lineTo(canvas.width, i * cellSize);
                     ctx.stroke();
                 }
-                // snake
                 snake.forEach((segment, idx) => {
-                    const grad = ctx.createRadialGradient(segment.x*cellSize+3, segment.y*cellSize+3, 2, segment.x*cellSize+5, segment.y*cellSize+5, 6);
-                    grad.addColorStop(0, '#44dd44');
-                    grad.addColorStop(1, '#118811');
-                    ctx.fillStyle = idx === 0 ? '#88ff88' : grad;
+                    ctx.fillStyle = idx === 0 ? '#88ff88' : '#22aa22';
                     ctx.fillRect(segment.x * cellSize + 1, segment.y * cellSize + 1, cellSize - 2, cellSize - 2);
-                    if(idx === 0) {
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillRect(segment.x * cellSize + 4, segment.y * cellSize + 4, 4, 4);
-                    }
                 });
-                // food
                 ctx.fillStyle = '#ff5555';
-                ctx.shadowBlur = 5;
                 ctx.fillRect(food.x * cellSize + 2, food.y * cellSize + 2, cellSize - 4, cellSize - 4);
                 ctx.fillStyle = '#ffaa55';
                 ctx.fillRect(food.x * cellSize + 5, food.y * cellSize + 5, 3, 3);
-                ctx.shadowBlur = 0;
             }
             
             function moveSnake() {
@@ -846,8 +827,7 @@
                     case 'UP': newHead.y -= 1; break;
                     case 'DOWN': newHead.y += 1; break;
                 }
-                // check food collision
-                let ate = (newHead.x === food.x && newHead.y === food.y);
+                const ate = (newHead.x === food.x && newHead.y === food.y);
                 snake.unshift(newHead);
                 if (!ate) snake.pop();
                 else {
@@ -857,7 +837,6 @@
                     if (newFood) food = newFood;
                     else { gameWin(); return; }
                 }
-                // collision check
                 if (newHead.x < 0 || newHead.x >= gridSize || newHead.y < 0 || newHead.y >= gridSize ||
                     snake.slice(1).some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
                     gameOver();
@@ -872,24 +851,17 @@
                 gameInterval = null;
                 ctx.fillStyle = 'rgba(0,30,0,0.85)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.font = 'bold 16px "Courier New", monospace';
+                ctx.font = 'bold 16px monospace';
                 ctx.fillStyle = '#77ff77';
-                ctx.shadowBlur = 0;
                 ctx.fillText('GAME OVER', canvas.width/2-55, canvas.height/2);
-                ctx.font = '12px monospace';
-                ctx.fillStyle = '#55aa55';
-                ctx.fillText('press RESTART', canvas.width/2-45, canvas.height/2+30);
-                if(scoreSpan) scoreSpan.innerText = score;
             }
             
             function gameWin() {
-                if (!gameActive) return;
                 gameActive = false;
                 if (gameInterval) clearInterval(gameInterval);
                 gameInterval = null;
                 ctx.fillStyle = 'rgba(0,20,0,0.9)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.font = 'bold 14px monospace';
                 ctx.fillStyle = '#d4ff00';
                 ctx.fillText('✦ PERFECT WIN ✦', canvas.width/2-65, canvas.height/2);
             }
@@ -904,25 +876,23 @@
                 gameActive = true;
                 isPaused = false;
                 if(pauseBtn) pauseBtn.innerText = '⏸️ PAUSE';
-                const possibleFood = generateRandomFood();
-                if(possibleFood) food = possibleFood;
-                else food = {x: 5, y: 5};
+                const newFood = generateRandomFood();
+                if(newFood) food = newFood;
                 drawGame();
                 startGameLoop();
             }
             
             function startGameLoop() {
                 if (gameInterval) clearInterval(gameInterval);
-                gameInterval = setInterval(() => { moveSnake(); }, 150);
+                gameInterval = setInterval(() => { moveSnake(); }, 140);
             }
             
             function togglePause() {
                 if (!gameActive) { resetGame(); return; }
                 isPaused = !isPaused;
-                if(pauseBtn) pauseBtn.innerText = isPaused ? '▶️ RESUME' : '⏸️ PAUSE';
-                if(!isPaused && gameActive) {
-                    drawGame();
-                } else if(isPaused) {
+                pauseBtn.innerText = isPaused ? '▶️ RESUME' : '⏸️ PAUSE';
+                if(!isPaused && gameActive) drawGame();
+                else if(isPaused) {
                     ctx.fillStyle = 'rgba(0,20,0,0.7)';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.fillStyle = '#8aff8a';
@@ -931,6 +901,7 @@
                 }
             }
             
+            // Keyboard controls
             window.addEventListener('keydown', (e) => {
                 const key = e.key;
                 if (!gameActive || isPaused) return;
@@ -941,7 +912,30 @@
                 e.preventDefault();
             });
             
-            // touch / mobile swipe basics
+            // DPAD touch events
+            const dpadButtons = document.querySelectorAll('.dpad-btn[data-dir]');
+            dpadButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (!gameActive || isPaused) return;
+                    const dir = btn.getAttribute('data-dir');
+                    if (dir === 'UP' && direction !== 'DOWN') nextDirection = 'UP';
+                    else if (dir === 'DOWN' && direction !== 'UP') nextDirection = 'DOWN';
+                    else if (dir === 'LEFT' && direction !== 'RIGHT') nextDirection = 'LEFT';
+                    else if (dir === 'RIGHT' && direction !== 'LEFT') nextDirection = 'RIGHT';
+                });
+                btn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (!gameActive || isPaused) return;
+                    const dir = btn.getAttribute('data-dir');
+                    if (dir === 'UP' && direction !== 'DOWN') nextDirection = 'UP';
+                    else if (dir === 'DOWN' && direction !== 'UP') nextDirection = 'DOWN';
+                    else if (dir === 'LEFT' && direction !== 'RIGHT') nextDirection = 'LEFT';
+                    else if (dir === 'RIGHT' && direction !== 'LEFT') nextDirection = 'RIGHT';
+                });
+            });
+            
+            // Swipe fallback on canvas
             let touchStart = null;
             canvas.addEventListener('touchstart', (e) => {
                 const rect = canvas.getBoundingClientRect();
@@ -967,12 +961,12 @@
                 e.preventDefault();
             });
             
-            resetBtn.addEventListener('click', () => { resetGame(); });
-            pauseBtn.addEventListener('click', () => { togglePause(); });
+            resetBtn.addEventListener('click', () => resetGame());
+            pauseBtn.addEventListener('click', () => togglePause());
             resetGame();
         }
         
-        // ----- 9. INITIALIZE EVERYTHING -----
+        // ----- 9. INIT -----
         async function init() {
             initLiveClock();
             bindRefreshButtons();
@@ -980,11 +974,8 @@
             await refreshAllNews();
             startAutoRefresh();
             ensureChatWidget();
-            initSnakeGame();   // Snake loaded under chat
-            const titleEl = document.querySelector('title');
-            if(titleEl) titleEl.innerText = 'ANONNEWS // MOBILE CYBER HUB + SNAKE';
+            initSnakeGame();
         }
-        
         window.addEventListener('DOMContentLoaded', init);
     })();
 </script>
