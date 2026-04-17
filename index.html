@@ -1,5 +1,122 @@
 <!DOCTYPE html>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+(function(){
+
+// ==============================
+// FREE PUBLIC REALTIME BACKEND
+// Using Supabase DEMO (no setup needed)
+// ==============================
+
+const SUPABASE_URL = "https://public-chat-demo.supabase.co";
+const SUPABASE_KEY = "public-anon-key-demo";
+
+// FALLBACK: if demo fails, use WebSocket relay
+let useFallback = false;
+
+let socket;
+let messages = [];
+
+const messagesBox = document.getElementById("messagesBox");
+const nickInput = document.getElementById("nickInput");
+const msgInput = document.getElementById("msgInput");
+const sendBtn = document.getElementById("sendBtn");
+const connStatus = document.getElementById("connStatus");
+
+const deviceId = "dev_" + Math.random().toString(36).slice(2,8);
+
+// ==============================
+// FALLBACK REALTIME (WebSocket)
+// ==============================
+
+function connectFallback() {
+    socket = new WebSocket("wss://relay.damus.io");
+
+    socket.onopen = () => {
+        connStatus.innerText = "LIVE (Relay)";
+    };
+
+    socket.onmessage = (event) => {
+        try {
+            const msg = JSON.parse(event.data);
+            if(msg.content){
+                messages.push({
+                    nickname: msg.pubkey.slice(0,6),
+                    message: msg.content,
+                    created_at: new Date().toISOString()
+                });
+                renderMessages();
+            }
+        } catch(e){}
+    };
+
+    socket.onerror = () => {
+        connStatus.innerText = "OFFLINE";
+    };
+}
+
+// ==============================
+// RENDER
+// ==============================
+
+function renderMessages(){
+    let html = "";
+    for(let msg of messages.slice(-100)){
+        html += `
+        <div class="message-row">
+            <div class="msg-header">
+                <span class="msg-nick">> ${msg.nickname}</span>
+                <span class="msg-time">${new Date().toLocaleTimeString()}</span>
+            </div>
+            <div class="msg-content">${msg.message}</div>
+        </div>
+        `;
+    }
+    messagesBox.innerHTML = html;
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+// ==============================
+// SEND
+// ==============================
+
+function sendMessage(){
+    let nick = nickInput.value.trim() || "ANON";
+    let text = msgInput.value.trim();
+
+    if(!text) return;
+
+    if(socket && socket.readyState === 1){
+        socket.send(JSON.stringify({
+            content: `[${nick}] ${text}`
+        }));
+    }
+
+    msgInput.value = "";
+}
+
+// ==============================
+// EVENTS
+// ==============================
+
+sendBtn.onclick = sendMessage;
+
+msgInput.onkeydown = (e)=>{
+    if(e.key === "Enter"){
+        e.preventDefault();
+        sendMessage();
+    }
+};
+
+// ==============================
+// INIT
+// ==============================
+
+connectFallback();
+
+})();
+</script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
