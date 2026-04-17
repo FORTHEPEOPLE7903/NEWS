@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -158,6 +157,153 @@
             font-size: 10pt;
             cursor: pointer;
         }
+        
+        /* Forum Styles */
+        .forum-container {
+            margin-top: 20px;
+            background-color: #FFFFFF;
+            border: 4px outset #c0c0c0;
+            padding: 12px;
+        }
+        
+        .forum-title {
+            background: #000080;
+            color: #FFFF00;
+            font-family: "Comic Sans MS", cursive;
+            padding: 6px;
+            margin: -12px -12px 12px -12px;
+            text-align: center;
+            font-size: 18pt;
+            border-bottom: 2px solid #808080;
+        }
+        
+        .forum-post {
+            background-color: #EFEFEF;
+            border: 2px inset #FFFFFF;
+            margin-bottom: 12px;
+            padding: 10px;
+        }
+        
+        .post-header {
+            border-bottom: 1px solid #808080;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            font-family: "Courier New", monospace;
+            font-size: 11pt;
+        }
+        
+        .post-avatar {
+            background-color: #C0C0C0;
+            border: 1px solid #808080;
+            padding: 2px 6px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        .post-date {
+            color: #006600;
+            float: right;
+            font-size: 9pt;
+        }
+        
+        .post-message {
+            font-family: "Times New Roman", serif;
+            font-size: 12pt;
+            margin: 8px 0;
+            word-wrap: break-word;
+        }
+        
+        .reply-btn {
+            background: #C0C0C0;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            border-right: 2px solid #808080;
+            border-bottom: 2px solid #808080;
+            padding: 1px 8px;
+            font-size: 9pt;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        .reply-section {
+            margin-top: 8px;
+            margin-left: 20px;
+            padding-left: 12px;
+            border-left: 2px dotted #808080;
+        }
+        
+        .reply-post {
+            background-color: #E0E0E0;
+            border: 1px solid #C0C0C0;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            padding: 6px;
+        }
+        
+        .forum-form {
+            background-color: #D0D0D0;
+            border: 3px inset #FFFFFF;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        
+        .forum-form input, .forum-form textarea {
+            background-color: #FFFFFF;
+            border: 2px inset #808080;
+            font-family: "Times New Roman", serif;
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 4px;
+            box-sizing: border-box;
+        }
+        
+        .forum-form textarea {
+            height: 70px;
+            resize: vertical;
+        }
+        
+        .forum-form .btn {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .delete-btn {
+            float: right;
+            background: #800000;
+            color: #FFFFFF;
+            border: 2px outset #FF0000;
+            padding: 1px 6px;
+            font-size: 8pt;
+            cursor: pointer;
+        }
+        
+        .delete-reply {
+            float: right;
+            background: #660000;
+            color: #FFCCCC;
+            border: 1px outset #FF0000;
+            padding: 0px 4px;
+            font-size: 7pt;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        
+        .forum-stats {
+            font-size: 9pt;
+            text-align: right;
+            margin-top: 5px;
+            color: #333;
+        }
+        
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        
+        hr {
+            border: 1px solid #808080;
+        }
     </style>
 </head>
 <body>
@@ -175,6 +321,7 @@
         <a href="#">[ CRYPTO-ZOO ]</a>
         <a href="#">[ GUESTBOOK ]</a>
         <a href="#">[ LINKS ]</a>
+        <a href="#">[ FORUM ]</a>
     </div>
 
     <marquee scrollamount="5">
@@ -195,6 +342,29 @@
                 
                 <div class="gif-container">
                     <img src="https://web.archive.org/web/20090804104705/http://geocities.com/Athens/Acropolis/3802/work_in_prog.gif" alt="Construction">
+                </div>
+                
+                <!-- ANONYMOUS FORUM SECTION INSERTED INTO NEWS BOX FOR VINTAGE LAYOUT -->
+                <div class="forum-container" id="forumRoot">
+                    <div class="forum-title">
+                        <img src="https://web.archive.org/web/20091027061730/http://geocities.com/SiliconValley/Vista/5335/bitcoin.gif" width="25" align="absmiddle">
+                        █ ANONYMOUS UNDERGROUND FORUM █
+                        <img src="https://web.archive.org/web/20091027042531/http://geocities.com/Heartland/Meadows/8788/flaming_line.gif" width="40" align="absmiddle">
+                    </div>
+                    
+                    <div id="forumPostsContainer">
+                        <!-- Forum posts will be dynamically rendered here -->
+                    </div>
+                    
+                    <div class="forum-form">
+                        <b><span class="blink">>> POST ANONYMOUSLY <<</span></b><br>
+                        <small>No names, no emails — speak freely!</small>
+                        <textarea id="forumMessageInput" placeholder="Type your message here... (max 500 chars)"></textarea><br>
+                        <button class="btn" id="submitPostBtn">💬 PUBLISH POST</button>
+                        <button class="btn" id="clearFormBtn">🗑️ CLEAR</button>
+                        <span class="forum-stats" id="postCountDisplay">Threads: 0 | Replies: 0</span>
+                    </div>
+                    <center><img src="https://web.archive.org/web/20091027005003/http://geocities.com/athens/aegean/7091/ie_logo.gif" height="20"> <i>Encrypted with 56-bit nostalgia</i></center>
                 </div>
             </td>
             
@@ -245,8 +415,303 @@
     <img src="https://web.archive.org/web/20091027042531/http://geocities.com/Heartland/Meadows/8788/flaming_line.gif" width="600">
 </center>
 
-<a href="forum.html" class="forum-link">💬 Community Forum</a>
-
-
+<script>
+    // ======================
+    // ANONYMOUS FORUM SYSTEM
+    // ======================
+    // Data structure: Array of posts. Each post: { id, message, timestamp, replies: [] }
+    // replies: array of { id, message, timestamp }
+    
+    let forumPosts = [];
+    let nextPostId = 1;
+    let nextReplyId = 1;
+    
+    // Load from localStorage if available
+    function loadForumData() {
+        const saved = localStorage.getItem("anonymous_forum_2000");
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (parsed.posts && Array.isArray(parsed.posts)) {
+                    forumPosts = parsed.posts;
+                    nextPostId = parsed.nextPostId || (forumPosts.length + 1);
+                    nextReplyId = parsed.nextReplyId || 1;
+                } else {
+                    initSampleData();
+                }
+            } catch(e) {
+                initSampleData();
+            }
+        } else {
+            initSampleData();
+        }
+        updateStatsAndRender();
+    }
+    
+    function initSampleData() {
+        // Create some vintage anonymous posts to give the forum 90s/2000s vibe
+        const now = new Date();
+        const timeStr = (d) => d.toLocaleString();
+        
+        forumPosts = [
+            {
+                id: nextPostId++,
+                message: "Just bought 0.05 BTC! To the moon! Who else is HODLing? 🚀",
+                timestamp: timeStr(new Date(now.getTime() - 3600000)),
+                replies: [
+                    { id: nextReplyId++, message: "Anonymous #1: Paper hands will be left behind. HODL strong brother!", timestamp: timeStr(new Date(now.getTime() - 3500000)) },
+                    { id: nextReplyId++, message: "Diamond hands only. Also what's with the new airport rules in Singapore?", timestamp: timeStr(new Date(now.getTime() - 3400000)) }
+                ]
+            },
+            {
+                id: nextPostId++,
+                message: "That ceasefire news is huge! Oil prices gonna drop? Thoughts?",
+                timestamp: timeStr(new Date(now.getTime() - 7200000)),
+                replies: [
+                    { id: nextReplyId++, message: "Hopefully cheaper gas! But watch the geopolitical risk.", timestamp: timeStr(new Date(now.getTime() - 7100000)) }
+                ]
+            },
+            {
+                id: nextPostId++,
+                message: "Changi Airport two-device rule is insane. I carry 3 power banks! Any workarounds?",
+                timestamp: timeStr(new Date(now.getTime() - 86400000)),
+                replies: []
+            }
+        ];
+    }
+    
+    function saveForumData() {
+        const dataToSave = {
+            posts: forumPosts,
+            nextPostId: nextPostId,
+            nextReplyId: nextReplyId
+        };
+        localStorage.setItem("anonymous_forum_2000", JSON.stringify(dataToSave));
+    }
+    
+    function getReplyCount() {
+        return forumPosts.reduce((acc, post) => acc + post.replies.length, 0);
+    }
+    
+    function updateStatsAndRender() {
+        const totalPosts = forumPosts.length;
+        const totalReplies = getReplyCount();
+        const statsSpan = document.getElementById("postCountDisplay");
+        if (statsSpan) statsSpan.innerText = `Threads: ${totalPosts} | Replies: ${totalReplies}`;
+        renderForum();
+        saveForumData();
+    }
+    
+    function addNewPost(message) {
+        if (!message || message.trim() === "") {
+            alert("ERROR: Cannot post empty message! Type something, fellow netizen.");
+            return false;
+        }
+        if (message.length > 500) {
+            alert("Message too long! Keep it under 500 chars (GeoCities style).");
+            return false;
+        }
+        const newPost = {
+            id: nextPostId++,
+            message: message.trim(),
+            timestamp: new Date().toLocaleString(),
+            replies: []
+        };
+        forumPosts.unshift(newPost); // newest first
+        updateStatsAndRender();
+        return true;
+    }
+    
+    function addReplyToPost(postId, replyMessage) {
+        if (!replyMessage || replyMessage.trim() === "") {
+            alert("Cannot post empty reply!");
+            return false;
+        }
+        if (replyMessage.length > 400) {
+            alert("Reply too long! Max 400 characters.");
+            return false;
+        }
+        const post = forumPosts.find(p => p.id === postId);
+        if (post) {
+            const newReply = {
+                id: nextReplyId++,
+                message: replyMessage.trim(),
+                timestamp: new Date().toLocaleString()
+            };
+            post.replies.push(newReply);
+            updateStatsAndRender();
+            return true;
+        }
+        return false;
+    }
+    
+    function deletePost(postId) {
+        if (confirm("⚠️ DELETE whole thread? This action is irreversible (just like floppy disk formatting).")) {
+            forumPosts = forumPosts.filter(p => p.id !== postId);
+            updateStatsAndRender();
+        }
+    }
+    
+    function deleteReply(postId, replyId) {
+        if (confirm("Remove this anonymous reply? Your voice will vanish into the 56k modem abyss.")) {
+            const post = forumPosts.find(p => p.id === postId);
+            if (post) {
+                post.replies = post.replies.filter(r => r.id !== replyId);
+                updateStatsAndRender();
+            }
+        }
+    }
+    
+    // Render everything with retro flair
+    function renderForum() {
+        const container = document.getElementById("forumPostsContainer");
+        if (!container) return;
+        
+        if (forumPosts.length === 0) {
+            container.innerHTML = `<div style="background:#FFFFCC; border:2px inset #808080; padding:20px; text-align:center; font-family:'Courier New'">
+                <img src="https://web.archive.org/web/20091027061730/http://geocities.com/SiliconValley/Vista/5335/bitcoin.gif" width="30"><br>
+                <b>NO POSTS YET. BE THE FIRST ANON!</b><br>
+                <i>~ Speak your mind, no registration required ~</i>
+            </div>`;
+            return;
+        }
+        
+        let html = "";
+        for (let i = 0; i < forumPosts.length; i++) {
+            const post = forumPosts[i];
+            // main post
+            html += `
+                <div class="forum-post" data-post-id="${post.id}">
+                    <div class="post-header clearfix">
+                        <span class="post-avatar">👤 ANONYMOUS #${post.id}</span>
+                        <span class="post-date">📅 ${escapeHtml(post.timestamp)}</span>
+                        <button class="delete-btn" onclick="deletePost(${post.id})">[X] DELETE THREAD</button>
+                    </div>
+                    <div class="post-message">
+                        ${escapeHtml(post.message).replace(/\n/g, '<br>')}
+                    </div>
+                    <button class="reply-btn" onclick="showReplyForm(${post.id})">💬 REPLY TO THREAD</button>
+                    <div id="replyFormContainer_${post.id}" style="display:none; margin-top:8px;"></div>
+            `;
+            
+            // render replies
+            if (post.replies.length > 0) {
+                html += `<div class="reply-section"><b>↳ REPLIES (${post.replies.length}):</b>`;
+                for (let r of post.replies) {
+                    html += `
+                        <div class="reply-post">
+                            <div class="post-header" style="background:#D3D3D3;">
+                                <span class="post-avatar" style="background:#B0B0B0;">🔹 REPLY #${r.id}</span>
+                                <span class="post-date">📅 ${escapeHtml(r.timestamp)}</span>
+                                <button class="delete-reply" onclick="deleteReply(${post.id}, ${r.id})">[x]</button>
+                            </div>
+                            <div class="post-message" style="font-size:11pt;">
+                                ${escapeHtml(r.message).replace(/\n/g, '<br>')}
+                            </div>
+                        </div>
+                    `;
+                }
+                html += `</div>`;
+            } else {
+                html += `<div class="reply-section"><i>🔇 No replies yet. Be the first to echo.</i></div>`;
+            }
+            
+            html += `</div>`;
+        }
+        container.innerHTML = html;
+    }
+    
+    window.showReplyForm = function(postId) {
+        const container = document.getElementById(`replyFormContainer_${postId}`);
+        if (!container) return;
+        // if already visible, toggle off? Actually we just show fresh form each time to avoid stacking.
+        // Check if inner form already exists
+        if (container.style.display === "block") {
+            container.style.display = "none";
+            return;
+        }
+        container.style.display = "block";
+        container.innerHTML = `
+            <div style="background:#C8C8C8; border:2px inset white; padding:8px; margin-top:5px;">
+                <textarea id="replyText_${postId}" rows="2" placeholder="Type your anonymous reply here..." style="width:95%; margin-bottom:5px;"></textarea><br>
+                <button class="btn" onclick="submitReply(${postId})">📢 POST REPLY</button>
+                <button class="btn" onclick="document.getElementById('replyFormContainer_${postId}').style.display='none'">CANCEL</button>
+            </div>
+        `;
+    };
+    
+    window.submitReply = function(postId) {
+        const textarea = document.getElementById(`replyText_${postId}`);
+        if (!textarea) return;
+        const replyMsg = textarea.value;
+        if (addReplyToPost(postId, replyMsg)) {
+            // clear and hide form
+            textarea.value = "";
+            const container = document.getElementById(`replyFormContainer_${postId}`);
+            if (container) container.style.display = "none";
+        }
+    };
+    
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
+    // Event listeners for main post form
+    document.addEventListener("DOMContentLoaded", function() {
+        loadForumData();
+        
+        const submitBtn = document.getElementById("submitPostBtn");
+        const msgInput = document.getElementById("forumMessageInput");
+        const clearBtn = document.getElementById("clearFormBtn");
+        
+        if (submitBtn) {
+            submitBtn.addEventListener("click", function() {
+                const message = msgInput.value;
+                if (addNewPost(message)) {
+                    msgInput.value = "";
+                }
+            });
+        }
+        
+        if (clearBtn) {
+            clearBtn.addEventListener("click", function() {
+                msgInput.value = "";
+            });
+        }
+        
+        // optional: Enter key (Ctrl+Enter for textarea)
+        if (msgInput) {
+            msgInput.addEventListener("keydown", function(e) {
+                if (e.ctrlKey && e.key === "Enter") {
+                    e.preventDefault();
+                    if (submitBtn) submitBtn.click();
+                }
+            });
+        }
+        
+        // re-declare functions globally so inline onclick works
+        window.deletePost = deletePost;
+        window.deleteReply = deleteReply;
+        window.addNewPost = addNewPost;
+        window.submitReply = submitReply;
+        window.showReplyForm = showReplyForm;
+    });
+    
+    // ensure functions are globally accessible for dynamic buttons
+    window.deletePost = deletePost;
+    window.deleteReply = deleteReply;
+    window.addReplyToPost = addReplyToPost;
+    window.showReplyForm = showReplyForm;
+    window.submitReply = submitReply;
+    
+</script>
 </body>
 </html>
