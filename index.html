@@ -1,110 +1,183 @@
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATRIX CHAT</title>
+
+<style>
+body {
+  background: black;
+  color: #0f0;
+  font-family: monospace;
+  padding: 20px;
+}
+
+.messages-box {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message-row {
+  margin-bottom: 10px;
+}
+
+input {
+  background: black;
+  color: #0f0;
+  border: 1px solid #0f0;
+  padding: 5px;
+}
+
+button {
+  background: black;
+  color: #0f0;
+  border: 1px solid #0f0;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>MATRIX CHAT</h2>
+<div>Status: <span id="connStatus">CONNECTING...</span></div>
+<div>Online: <span id="onlineCount">0</span></div>
+
+<div id="messagesBox" class="messages-box"></div>
+
+<input id="nickInput" placeholder="Nickname">
+<input id="msgInput" placeholder="Message">
+<button id="sendBtn">Send</button>
+
+<!-- ✅ FIXED SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-(function(){
+(async function(){
 
 const SUPABASE_URL = "YOUR_URL";
 const SUPABASE_KEY = "YOUR_ANON_KEY";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let messages = [];
 const deviceId = "dev_" + Math.random().toString(36).slice(2,8);
 
 // DOM
-const messagesBox = document.getElementById("messagesBox");
+const box = document.getElementById("messagesBox");
 const nickInput = document.getElementById("nickInput");
 const msgInput = document.getElementById("msgInput");
 const sendBtn = document.getElementById("sendBtn");
-const connStatus = document.getElementById("connStatus");
-const onlineCount = document.getElementById("onlineCount");
+const status = document.getElementById("connStatus");
+const online = document.getElementById("onlineCount");
 
 // Escape
-function escapeHtml(str){
-  return str.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+function safe(str){
+  return (str || "").replace(/[&<>]/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;"
+  }[m]));
 }
 
-// Render
+// Render message
 function render(msg){
   const div = document.createElement("div");
   div.className = "message-row";
 
   div.innerHTML = `
-    <div class="msg-header">
-      <span class="msg-nick">> ${escapeHtml(msg.nickname)}</span>
-      <span class="msg-time">${new Date(msg.created_at).toLocaleTimeString()}</span>
-    </div>
-    <div class="msg-content">${escapeHtml(msg.message)}</div>
+    <b>${safe(msg.nickname)}</b>
+    <small>${new Date(msg.created_at).toLocaleTimeString()}</small>
+    <div>${safe(msg.message)}</div>
   `;
 
-  messagesBox.appendChild(div);
-  messagesBox.scrollTop = messagesBox.scrollHeight;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
 }
 
-// Load old messages
-async function loadMessages(){
-  const { data } = await supabase
+// Load messages
+async function load(){
+  const { data, error } = await db
     .from("chat_messages")
     .select("*")
     .order("created_at",{ascending:true})
     .limit(100);
 
-  messagesBox.innerHTML = "";
+  if(error){
+    console.error(error);
+    status.innerText = "ERROR";
+    return;
+  }
+
+  box.innerHTML = "";
   data.forEach(render);
 
-  connStatus.innerText = "LIVE";
+  status.innerText = "LIVE";
 }
 
-// Send
-async function sendMessage(){
-  let nick = nickInput.value.trim() || "ANON";
-  let text = msgInput.value.trim();
+// Send message
+async function send(){
+  const nick = nickInput.value.trim() || "ANON";
+  const text = msgInput.value.trim();
+
   if(!text) return;
 
-  await supabase.from("chat_messages").insert([{
+  const { error } = await db.from("chat_messages").insert([{
     nickname: nick,
     message: text,
     user_id: deviceId
   }]);
 
+  if(error){
+    alert(error.message);
+    return;
+  }
+
   msgInput.value = "";
 }
 
-// REALTIME (THIS IS THE BIG UPGRADE)
-supabase
-.channel("chat-room")
+// REALTIME
+db.channel("room")
 .on(
   "postgres_changes",
   { event: "INSERT", schema: "public", table: "chat_messages" },
-  payload => {
-    render(payload.new);
-  }
+  payload => render(payload.new)
 )
 .subscribe();
 
-// Simple online count
+// Online users
 setInterval(async ()=>{
   const since = new Date(Date.now()-30000).toISOString();
 
-  const { data } = await supabase
+  const { data } = await db
     .from("chat_messages")
     .select("user_id")
     .gte("created_at", since);
 
+  if(!data) return;
+
   const users = new Set(data.map(x=>x.user_id));
   users.add(deviceId);
 
-  onlineCount.innerText = users.size;
+  online.innerText = users.size;
 }, 3000);
 
 // Events
-sendBtn.onclick = sendMessage;
-msgInput.onkeydown = e=>{
-  if(e.key==="Enter") sendMessage();
-};
+sendBtn.onclick = send;
+msgInput.addEventListener("keydown", e=>{
+  if(e.key === "Enter") send();
+});
 
 // Init
-loadMessages();
+load();
 
 })();
 </script>
+
+</body>
+</html>
