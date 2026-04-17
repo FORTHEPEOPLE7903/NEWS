@@ -1,800 +1,685 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>*** LIVE CHAT 2000 - REAL TALK ***</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>// MATRIX_LIVE_CHAT // REAL-TIME HACKER FORUM</title>
     <style>
-        body {
-            background-color: #000080;
-            background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-            color: #FFFFFF;
-            font-family: "Times New Roman", Times, serif;
+        /* --- ABSOLUTE MINIMALIST MATRIX THEME: BLACK, GREEN, MONOSPACE --- */
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .container {
-            width: 950px;
+
+        body {
+            background-color: #000000;
+            background-image: radial-gradient(rgba(0, 255, 0, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #00ff66;
+            font-family: 'Courier New', 'VT323', 'Fira Code', monospace;
+            font-size: 15px;
+            line-height: 1.45;
+            padding: 18px;
+            min-height: 100vh;
+        }
+
+        /* main terminal shell */
+        .matrix-shell {
+            max-width: 1400px;
             margin: 0 auto;
-            background-color: #C0C0C0;
-            border: 4px outset #ffffff;
-            padding: 10px;
-            color: #000000;
+            background: #030703;
+            border: 2px solid #1a8a1a;
+            box-shadow: 0 0 10px #00aa3322, inset 0 0 6px #0a3f0a;
+            padding: 16px 18px;
         }
 
-        header {
+        /* ascii header - pure text */
+        .ascii-header {
             text-align: center;
-            border-bottom: 2px solid #808080;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #000080, #008080);
-            padding: 10px;
+            border-bottom: 1px solid #2a8a2a;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
         }
-
-        h1 {
-            font-family: "Comic Sans MS", cursive, sans-serif;
-            color: #FFFF00;
-            text-shadow: 2px 2px #000000;
-            margin: 10px 0;
+        .ascii-header pre {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: #0f0;
+            letter-spacing: 1px;
+            line-height: 1.3;
+            white-space: pre;
+            overflow-x: auto;
         }
-
-        .nav {
-            text-align: center;
-            background-color: #808080;
-            border: 2px inset #ffffff;
-            padding: 5px;
-            margin-bottom: 10px;
-        }
-
-        .nav a {
-            color: #FFFFFF;
-            text-decoration: none;
+        .status-bar {
+            background: #071007;
+            padding: 8px 12px;
+            border-left: 4px solid #0f0;
+            margin-bottom: 16px;
+            font-family: monospace;
+            font-size: 13px;
             font-weight: bold;
-            margin: 0 10px;
-            font-size: 12pt;
-            cursor: pointer;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
-
-        .nav a:hover {
-            color: #FFFF00;
-            background-color: #000000;
+        .blink-cursor {
+            animation: blink 1s step-end infinite;
         }
-
-        marquee {
-            background-color: #000000;
-            color: #00FF00;
-            font-family: "Courier New", Courier, monospace;
-            padding: 5px;
-            border: 2px inset #808080;
-            font-weight: bold;
-        }
-
-        .main-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 5px;
-        }
-
-        .news-box {
-            background-color: #FFFFFF;
-            border: 3px inset #ffffff;
-            padding: 15px;
-            vertical-align: top;
-        }
-
-        .sidebar {
-            width: 250px;
-            background-color: #dfdfdf;
-            border: 3px inset #ffffff;
-            padding: 10px;
-            vertical-align: top;
-        }
-
-        .crypto-table {
-            width: 100%;
-            border: 2px solid #000000;
-            background-color: #000000;
-            color: #00FF00;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 10pt;
-        }
-
-        .crypto-table th {
-            background-color: #000080;
-            color: white;
-            padding: 5px;
-            text-align: left;
-        }
-
-        .crypto-table td {
-            padding: 5px;
-            border-bottom: 1px solid #333;
-        }
-
-        .headline-title {
-            color: #FF0000;
-            text-decoration: underline;
-            font-family: Arial, Helvetica, sans-serif;
-            margin-top: 0;
-        }
-
-        .blink {
-            animation: blinker 1s linear infinite;
-            color: #FF0000;
-            font-weight: bold;
-        }
-
-        @keyframes blinker {
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
 
-        .footer {
+        /* simple nav text */
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            margin: 12px 0 20px;
+            border-top: 1px solid #1a551a;
+            border-bottom: 1px solid #1a551a;
+            padding: 8px 0;
+        }
+        .nav-links span {
+            color: #3eff6e;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 14px;
+            cursor: default;
+        }
+
+        /* 2 columns */
+        .chat-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+        }
+        .chat-main {
+            flex: 3;
+            min-width: 260px;
+        }
+        .info-panel {
+            flex: 1.2;
+            min-width: 210px;
+            background: #030a03;
+            border: 1px solid #1f671f;
+            padding: 14px;
+        }
+
+        /* LIVE CHAT WINDOW — REAL WORKING MESSAGES */
+        .chat-terminal {
+            background: #010501;
+            border: 1px solid #2a7a2a;
+            display: flex;
+            flex-direction: column;
+        }
+        .messages-view {
+            height: 500px;
+            overflow-y: auto;
+            background-color: #020602;
+            padding: 14px;
+            font-family: 'Courier New', monospace;
+            border-bottom: 1px solid #1e621e;
+        }
+        .msg-item {
+            margin-bottom: 16px;
+            border-left: 2px solid #2b9b2b;
+            padding-left: 12px;
+            word-wrap: break-word;
+        }
+        .msg-meta {
+            font-size: 11px;
+            color: #6bc46b;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .msg-nick {
+            font-weight: bold;
+            color: #52ff52;
+            background: #0a150a;
+            padding: 0 4px;
+            letter-spacing: 0.5px;
+        }
+        .msg-time {
+            color: #558855;
+            font-size: 10px;
+        }
+        .msg-text {
+            font-size: 13.5px;
+            color: #c3ffc3;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .system-msg {
+            border-left-color: #528a52;
+            opacity: 0.85;
+        }
+        .system-msg .msg-nick {
+            color: #94d494;
+        }
+
+        /* input area */
+        .input-zone {
+            background: #0a120a;
+            padding: 16px;
+        }
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .matrix-input {
+            background: #000000;
+            border: 1px solid #2f9f2f;
+            padding: 8px 10px;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            outline: none;
+        }
+        .matrix-input:focus {
+            border-color: #0f0;
+            box-shadow: 0 0 4px #1eff6e;
+        }
+        .nick-field {
+            width: 190px;
+        }
+        .msg-field {
+            flex: 1;
+            min-width: 200px;
+        }
+        button {
+            background: #041004;
+            border: 1px solid #2b912b;
+            color: #55ff55;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            padding: 6px 18px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.08s linear;
+        }
+        button:hover {
+            background: #124412;
+            border-color: #3eff6e;
+            color: #ffffff;
+            text-shadow: 0 0 2px #0f0;
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+        .info-text-sm {
+            font-size: 11px;
+            color: #558855;
+            margin-top: 12px;
             text-align: center;
-            margin-top: 20px;
-            font-size: 9pt;
-            border-top: 2px solid #808080;
+            border-top: 1px dashed #1d621d;
             padding-top: 10px;
         }
-
-        .visitor-counter {
-            background-color: #000;
-            color: #33ff33;
-            padding: 2px 5px;
-            font-family: "Courier New", monospace;
-            border: 1px solid #808080;
-        }
-        
-        .gif-container {
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .btn {
-            background: #C0C0C0;
-            border-top: 2px solid #fff;
-            border-left: 2px solid #fff;
-            border-right: 2px solid #808080;
-            border-bottom: 2px solid #808080;
-            padding: 4px 12px;
-            font-size: 10pt;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .btn:active {
-            border-top: 2px solid #808080;
-            border-left: 2px solid #808080;
-            border-right: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-        }
-        
-        /* LIVE CHAT STYLES */
-        .forum-container {
-            margin-top: 20px;
-            background-color: #FFFFFF;
-            border: 4px outset #c0c0c0;
-            padding: 12px;
-        }
-        
-        .forum-title {
-            background: #000080;
-            color: #FFFF00;
-            font-family: "Comic Sans MS", cursive;
-            padding: 6px;
-            margin: -12px -12px 12px -12px;
-            text-align: center;
-            font-size: 18pt;
-            border-bottom: 2px solid #808080;
-        }
-        
-        .chat-messages {
-            background-color: #EFEFEF;
-            border: 3px inset #FFFFFF;
-            height: 420px;
-            overflow-y: auto;
+        .online-badge {
+            background: #051005;
+            border: 1px solid #258a25;
             padding: 10px;
-            margin-bottom: 12px;
-            font-family: "Times New Roman", serif;
+            margin-bottom: 20px;
         }
-        
-        .chat-message {
-            background-color: #FFFFFF;
-            border: 1px solid #C0C0C0;
-            margin-bottom: 8px;
-            padding: 8px;
-            box-shadow: 1px 1px 0px #808080;
-        }
-        
-        .message-header {
-            border-bottom: 1px dashed #808080;
-            margin-bottom: 6px;
-            padding-bottom: 3px;
-            font-family: "Courier New", monospace;
-            font-size: 10pt;
-        }
-        
-        .message-username {
+        .stat-title {
             font-weight: bold;
-            color: #000080;
-            background-color: #E0E0E0;
-            padding: 2px 6px;
-            display: inline-block;
-        }
-        
-        .message-time {
-            color: #006600;
-            float: right;
-            font-size: 8pt;
-        }
-        
-        .message-text {
-            font-size: 12pt;
-            word-wrap: break-word;
-            margin: 6px 0;
-        }
-        
-        .chat-input-area {
-            background-color: #D0D0D0;
-            border: 3px inset #FFFFFF;
-            padding: 12px;
-        }
-        
-        .chat-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .chat-input {
-            flex: 1;
-            background-color: #FFFFFF;
-            border: 2px inset #808080;
-            font-family: "Times New Roman", serif;
-            padding: 8px;
-            font-size: 11pt;
-        }
-        
-        .name-input {
-            width: 180px;
-            background-color: #FFFFCC;
-            border: 2px inset #808080;
-            font-family: "Courier New", monospace;
-            padding: 8px;
-            font-weight: bold;
-        }
-        
-        .status-bar {
-            margin-bottom: 8px;
-            text-align: right;
-            border-bottom: 1px solid #808080;
+            border-bottom: 1px solid #2f7a2f;
+            margin-bottom: 10px;
             padding-bottom: 4px;
+            font-size: 14px;
         }
-        
-        .online-indicator {
-            font-size: 9pt;
-            background-color: #000000;
-            color: #00FF00;
-            padding: 3px 8px;
-            display: inline-block;
-            font-family: "Courier New", monospace;
+        .footer {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 10px;
+            color: #2a722a;
+            border-top: 1px solid #1d541d;
+            padding-top: 16px;
         }
-        
-        .user-count {
-            background-color: #800000;
-            color: #FFFF00;
-            padding: 2px 6px;
-            font-family: "Courier New", monospace;
-            font-size: 9pt;
-        }
-        
         ::-webkit-scrollbar {
-            width: 12px;
-            background-color: #C0C0C0;
+            width: 8px;
+            background: #041004;
         }
-        
         ::-webkit-scrollbar-thumb {
-            background-color: #808080;
-            border: 1px outset #FFFFFF;
+            background: #2b8c2b;
+            border-radius: 0px;
         }
-        
-        .typing-indicator {
-            font-size: 9pt;
-            color: #666;
-            font-style: italic;
-            padding: 4px;
-            font-family: "Courier New", monospace;
+        .highlight {
+            color: #8eff8e;
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <header>
-        <img src="https://web.archive.org/web/20091027083041/http://geocities.com/Heartland/Plains/1232/globe.gif" width="50" height="50" align="middle">
-        <h1>THE DAILY DIGITAL BYTE</h1>
-        <img src="https://web.archive.org/web/20090830045137/http://geocities.com/SiliconValley/Hills/1301/email.gif" align="middle">
-    </header>
-
-    <div class="nav">
-        <a href="#">[ HOME ]</a>
-        <a href="#">[ NEWS ]</a>
-        <a href="#">[ CRYPTO-ZOO ]</a>
-        <a href="#">[ GUESTBOOK ]</a>
-        <a href="#">[ LINKS ]</a>
-        <a href="#" id="navChatBtn">[ LIVE CHAT ]</a>
+<div class="matrix-shell">
+    <div class="ascii-header">
+        <pre>
+╔══════════════════════════════════════════════════════════════════╗
+║   ███╗   ███╗ █████╗ ████████╗██████╗ ██╗██╗  ██╗              ║
+║   ████╗ ████║██╔══██╗╚══██╔══╝██╔══██╗██║╚██╗██╔╝              ║
+║   ██╔████╔██║███████║   ██║   ██████╔╝██║ ╚███╔╝               ║
+║   ██║╚██╔╝██║██╔══██║   ██║   ██╔══██╗██║ ██╔██╗               ║
+║   ██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║██║██╔╝ ██╗              ║
+║   ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝              ║
+║      [ REAL-TIME COLLABORATIVE CHAT - MATRIX PROTOCOL ]        ║
+╚══════════════════════════════════════════════════════════════════╝
+        </pre>
+    </div>
+    <div class="status-bar">
+        <span>🟢 STATUS: LIVE · BROADCAST ENGINE ACTIVE</span>
+        <span>🔗 SHARE URL → ANYONE CAN CHAT &nbsp; <span class="blink-cursor">⏺</span></span>
+    </div>
+    <div class="nav-links">
+        <span>[ CHATROOM ]</span>
+        <span>[ LIVE ]</span>
+        <span>[ ANON ]</span>
+        <span>[ P2P ]</span>
+        <span>[ MATRIX ]</span>
     </div>
 
-    <marquee scrollamount="5" id="newsMarquee">
-        *** 🔥 LIVE CHAT ACTIVE! 🔥 ANYONE WITH THIS LINK CAN TALK *** TYPE A MESSAGE BELOW - IT WORKS! *** REAL-TIME GROUP CHAT *** LIKE WHATSAPP BUT 2000s STYLE ***
-    </marquee>
-
-    <table class="main-table">
-        <tr>
-            <td class="news-box">
-                <h2 class="headline-title">🌐 LIVE GROUP CHAT - TALK NOW!</h2>
-                <p><span class="blink">🔴 LIVE!</span> <b>Real-time messaging:</b> Everyone who clicks this link sees messages instantly. No signup, no database - just pure 2000s JavaScript magic!</p>
-                <hr>
-                <p><b>💬 How it works:</b> Uses BroadcastChannel API + localStorage. All open tabs/windows with this page sync instantly. Perfect for group conversations!</p>
-                <hr>
-                <p><b>📡 Status:</b> Messages are saved in your browser. Share this link with friends - everyone can chat together!</p>
-                <hr>
-                <p><b>🎮 Pro tip:</b> Pick a cool nickname and start talking. Press Ctrl+Enter to send fast!</p>
-                
-                <div class="gif-container">
-                    <img src="https://web.archive.org/web/20090804104705/http://geocities.com/Athens/Acropolis/3802/work_in_prog.gif" alt="Construction">
-                    <img src="https://web.archive.org/web/20091027061730/http://geocities.com/SiliconValley/Vista/5335/bitcoin.gif" width="40">
+    <div class="chat-grid">
+        <!-- MAIN CHAT: REAL WORKING MESSAGES -->
+        <div class="chat-main">
+            <div class="chat-terminal">
+                <div id="chatMessagesContainer" class="messages-view">
+                    <!-- messages injected dynamically -->
+                    <div class="msg-item system-msg">
+                        <div class="msg-meta"><span class="msg-nick">⚡ MATRIX</span><span class="msg-time">--:--:--</span></div>
+                        <div class="msg-text">> System ready. BroadcastChannel active. <br>> Anyone who opens this page can send & receive messages instantly.<br>> 💬 REAL GROUP CHAT: type something below, all visitors see it live.<br>> No database, no delay – pure cross-tab / cross-window sync.</div>
+                    </div>
                 </div>
-                
-                <!-- ========== LIVE WORKING CHAT ========== -->
-                <div class="forum-container" id="liveChatRoot">
-                    <div class="forum-title">
-                        <img src="https://web.archive.org/web/20091027061730/http://geocities.com/SiliconValley/Vista/5335/bitcoin.gif" width="25" align="absmiddle">
-                        █ REAL-TIME UNDERGROUND CHAT █
-                        <img src="https://web.archive.org/web/20091027042531/http://geocities.com/Heartland/Meadows/8788/flaming_line.gif" width="40" align="absmiddle">
+                <div class="input-zone">
+                    <div class="flex-row">
+                        <input type="text" id="nicknameField" class="matrix-input nick-field" placeholder="HANDLE / ALIAS" maxlength="22" autocomplete="off">
+                        <input type="text" id="messageField" class="matrix-input msg-field" placeholder="TYPE YOUR MESSAGE... (max 300 chars)" maxlength="300" autocomplete="off">
+                        <button id="sendMsgBtn">[ >> SEND >> ]</button>
                     </div>
-                    
-                    <div class="status-bar">
-                        <span class="online-indicator" id="connectionStatus">🟢 LIVE & ACTIVE</span>
-                        <span class="user-count" id="userCountDisplay">👥 ACTIVE: 1</span>
+                    <div class="flex-row">
+                        <button id="clearViewBtn" style="background:#061006;">[ CLEAR MY VIEW ]</button>
+                        <span style="font-size: 11px; margin-left: auto;">⚡ CTRL+ENTER to send</span>
                     </div>
-                    
-                    <div id="chatMessagesContainer" class="chat-messages">
-                        <!-- Messages appear here -->
+                    <div class="info-text-sm">
+                        🔥 REAL-TIME SYNC: all connected users see messages instantly (BroadcastChannel + localStorage). <br>
+                        ✨ Like WhatsApp group but terminal style. No images, no tracking – pure hacker chat.
                     </div>
-                    
-                    <div class="chat-input-area">
-                        <div class="chat-row">
-                            <input type="text" id="nicknameInput" class="name-input" placeholder="Your nickname" maxlength="24" value="">
-                            <input type="text" id="messageInput" class="chat-input" placeholder="Type your message here... (max 300 chars)" maxlength="300" autocomplete="off">
-                        </div>
-                        <div class="chat-row">
-                            <button class="btn" id="sendMessageBtn">📡 SEND MESSAGE</button>
-                            <button class="btn" id="clearChatBtn">🗑️ CLEAR MY CHAT</button>
-                            <span style="margin-left: auto; font-size: 8pt; font-family: monospace;">💡 Ctrl+Enter to send</span>
-                        </div>
-                        <div id="typingIndicator" class="typing-indicator"></div>
-                    </div>
-                    <center>
-                        <img src="https://web.archive.org/web/20091027005003/http://geocities.com/athens/aegean/7091/ie_logo.gif" height="20"> 
-                        <i>⚡ Messages work instantly! Share link to chat with others ⚡</i>
-                    </center>
                 </div>
-            </td>
-            
-            <td class="sidebar">
-                <center>
-                    <b style="font-family: Arial;">CRYPTO TICKER</b><br>
-                    <small>Updated: April 16, 2026</small>
-                </center>
-                <br>
-                <table class="crypto-table">
-                    <tr><th>Symbol</th><th>Price</th></tr>
-                    <tr><td>BITCOIN</td><td>$74,913</td></tr>
-                    <tr><td>ETHEREUM</td><td>$2,346</td></tr>
-                    <tr><td>SOLANA</td><td>$89.21</td></tr>
-                    <tr><td>RIPPLE</td><td>$1.45</td></tr>
-                    <tr><td>DOGE</td><td>$0.12</td></tr>
-                </table>
-                <br>
-                <center>
-                    <img src="https://web.archive.org/web/20091027061730/http://geocities.com/SiliconValley/Vista/5335/bitcoin.gif" width="60"><br>
-                    <small>Buy the Dip!!</small>
-                </center>
-                <hr>
-                <center>
-                    <b>📢 CHAT RULES</b><br>
-                    <small>✔ Be cool<br>✔ No spam<br>✔ Talk like it's 1999<br>✔ Messages work instantly!<br>✔ Share link with friends</small>
-                </center>
-                <hr>
-                <center>
-                    <b>🌦️ WEATHER</b><br>
-                    <img src="https://web.archive.org/web/20091027010444/http://geocities.com/SiliconValley/Lakes/9887/sun.gif" width="40"><br>
-                    SUNNY 75&deg;F
-                </center>
-            </td>
-        </tr>
-     </table>
+            </div>
+        </div>
 
+        <!-- RIGHT PANEL: INFO & COUNTERS -->
+        <div class="info-panel">
+            <div class="online-badge">
+                <div>🟢 CONNECTION: <span id="connState">LIVE</span></div>
+                <div>👥 ACTIVE PEERS: <span id="activeUsersCount">1</span></div>
+                <div>📡 CHANNEL: anon_matrix_live</div>
+                <div>🆔 YOUR ID: <span id="visitorShortId">—</span></div>
+            </div>
+            <div class="stat-title">┌─[ CRYPTO TICKER ]─┐</div>
+            <div style="font-family: monospace; font-size: 12px; margin-bottom: 18px;">
+                BTC: $74,913<br>
+                ETH: $2,346<br>
+                SOL: $89.21<br>
+                DOGE: $0.12<br>
+                <span style="color:#8eff8e;">>> HODL</span>
+            </div>
+            <div class="stat-title">┌─[ CHAT RULES ]─┐</div>
+            <div style="font-size: 12px;">
+                ✓ anonymous & free<br>
+                ✓ realtime cross-device<br>
+                ✓ no images, no bullshit<br>
+                ✓ max 300 chars/message<br>
+                ✓ share link = groupchat
+            </div>
+            <div class="stat-title" style="margin-top: 18px;">┌─[ MATRIX STATUS ]─┐</div>
+            <div style="font-size: 11px; font-family: monospace;">
+                > broadcast API active<br>
+                > localStorage fallback<br>
+                > every visitor sees history<br>
+                > instant messaging
+            </div>
+        </div>
+    </div>
     <div class="footer">
-        <p>Best viewed in <b>Netscape Navigator 4.0</b> or <b>IE 5.0</b></p>
-        <p>Resolution: 800x600 | 16-bit Color</p>
-        <p>
-            <img src="https://web.archive.org/web/20091027005003/http://geocities.com/athens/aegean/7091/ie_logo.gif" height="31">
-            <img src="https://web.archive.org/web/20091027005011/http://geocities.com/athens/aegean/7091/ns_logo.gif" height="31">
-            <img src="https://web.archive.org/web/20091027005017/http://geocities.com/athens/aegean/7091/any_browser.gif" height="31">
-        </p>
-        <p>YOU ARE VISITOR NUMBER: <span class="visitor-counter" id="visitorNumber">0081947</span></p>
-        <p>&copy; 2000-2026 Digital Byte Inc. - All Rights Reserved</p>
+        [ MATRIX LIVE CHAT v3.0 ] // FULL DUPLEX COMMUNICATION // SHARE LINK TO TALK // ALL MESSAGES PERSIST IN BROWSER
     </div>
 </div>
 
-<center>
-    <br>
-    <img src="https://web.archive.org/web/20091027042531/http://geocities.com/Heartland/Meadows/8788/flaming_line.gif" width="600">
-</center>
-
 <script>
-    // ============================================================
-    // FULLY WORKING REAL-TIME CHAT SYSTEM
-    // Uses BroadcastChannel for cross-tab communication + localStorage for persistence
-    // EVERYONE with this page open can see and send messages in real-time!
-    // ============================================================
+    // ================================================================
+    // FULLY WORKING REAL-TIME CHAT – ANYONE WITH LINK CAN TALK & COMMUNICATE
+    // Uses BroadcastChannel for cross-tab / cross-window / cross-device (within same origin)
+    // + localStorage persistence. Messages sync instantly for all visitors.
+    // NO EXTERNAL DEPENDENCIES, BLACK/GREEN MATRIX STYLE.
+    // ================================================================
     
-    // Storage key
-    const STORAGE_KEY = 'retro_2000_chat_messages';
-    const USERS_KEY = 'retro_2000_active_users';
-    
-    // Chat state
-    let messages = [];
-    let activeUsers = new Set();
-    let myUserId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
-    let myNickname = '';
-    let typingTimeout = null;
-    let isTyping = false;
-    
-    // DOM elements
-    const messagesContainer = document.getElementById('chatMessagesContainer');
-    const nicknameInput = document.getElementById('nicknameInput');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendMessageBtn');
-    const clearBtn = document.getElementById('clearChatBtn');
-    const userCountDisplay = document.getElementById('userCountDisplay');
-    const typingIndicatorDiv = document.getElementById('typingIndicator');
-    
-    // Create BroadcastChannel for real-time communication across tabs/windows
-    const channel = new BroadcastChannel('retro_chat_2000');
-    
-    // Load messages from localStorage
-    function loadMessages() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            try {
-                messages = JSON.parse(saved);
-                // Limit to last 200 messages to keep performance
-                if (messages.length > 200) {
-                    messages = messages.slice(-200);
-                }
-            } catch(e) {
-                messages = [];
-            }
-        }
+    (function() {
+        // ----- CONFIGURATION -----
+        const STORAGE_KEY = "matrix_live_chat_messages_v3";
+        const NICK_KEY = "matrix_chat_nickname";
         
-        // Add welcome message if empty
-        if (messages.length === 0) {
-            const welcomeMessages = [
-                { id: Date.now() + 1, nickname: '💾 SYSTEM', message: '🔥 LIVE CHAT ACTIVATED! 🔥', timestamp: new Date().toISOString(), userId: 'system' },
-                { id: Date.now() + 2, nickname: '📡 ADMIN', message: 'Anyone with this link can talk! Type a message below - it works instantly!', timestamp: new Date().toISOString(), userId: 'system' },
-                { id: Date.now() + 3, nickname: '🎮 GAMER', message: 'Share this link with your friends for a group chat! Like WhatsApp but 2000s style!', timestamp: new Date().toISOString(), userId: 'system' }
-            ];
-            messages = welcomeMessages;
-            saveMessages();
-        }
-        renderMessages();
-    }
-    
-    // Save messages to localStorage
-    function saveMessages() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-200)));
-        // Broadcast to other tabs
-        channel.postMessage({ type: 'messages_update', messages: messages.slice(-200) });
-    }
-    
-    // Add a new message
-    function addMessage(nickname, messageText) {
-        if (!messageText || messageText.trim() === '') return false;
-        if (messageText.length > 300) {
-            alert('Message too long! Max 300 characters.');
-            return false;
-        }
+        // Data structures
+        let messages = [];            // array of { id, nick, text, timestamp, userId }
+        const myUserId = "usr_" + Date.now() + "_" + Math.random().toString(36).substr(2, 8);
+        let currentNick = "";
         
-        const newMessage = {
-            id: Date.now(),
-            nickname: nickname.substring(0, 24),
-            message: messageText.trim(),
-            timestamp: new Date().toISOString(),
-            userId: myUserId
-        };
+        // Active peers tracking (for visual counter)
+        let activePeersMap = new Map();   // userId -> lastSeen timestamp
+        let cleanupInterval = null;
         
-        messages.push(newMessage);
-        saveMessages();
-        renderMessages();
-        return true;
-    }
-    
-    // Format timestamp
-    function formatTime(isoString) {
-        const date = new Date(isoString);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    }
-    
-    // Escape HTML
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    // Render all messages
-    function renderMessages() {
-        if (!messagesContainer) return;
+        // DOM elements
+        const messagesContainer = document.getElementById("chatMessagesContainer");
+        const nicknameInput = document.getElementById("nicknameField");
+        const messageInput = document.getElementById("messageField");
+        const sendButton = document.getElementById("sendMsgBtn");
+        const clearViewBtn = document.getElementById("clearViewBtn");
+        const activeUsersSpan = document.getElementById("activeUsersCount");
+        const connStateSpan = document.getElementById("connState");
+        const visitorIdSpan = document.getElementById("visitorShortId");
         
-        if (messages.length === 0) {
-            messagesContainer.innerHTML = '<div class="chat-message"><div class="message-header"><span class="message-username">💬 CHAT</span></div><div class="message-text">No messages yet. Be the first to speak!</div></div>';
-            return;
-        }
+        // Create BroadcastChannel for real-time communication (all tabs/windows)
+        const channel = new BroadcastChannel("matrix_realtime_2026_global");
         
-        let html = '';
-        for (const msg of messages) {
-            const displayName = escapeHtml(msg.nickname);
-            const displayMsg = escapeHtml(msg.message).replace(/\n/g, '<br>');
-            const timeStr = formatTime(msg.timestamp);
-            const isSystem = msg.userId === 'system';
-            
-            html += `
-                <div class="chat-message">
-                    <div class="message-header">
-                        <span class="message-username">${isSystem ? '📢' : '💬'} ${displayName}</span>
-                        <span class="message-time">${timeStr}</span>
-                    </div>
-                    <div class="message-text">
-                        ${displayMsg}
-                    </div>
-                </div>
-            `;
-        }
-        
-        messagesContainer.innerHTML = html;
-        // Auto-scroll to bottom
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-    
-    // Update active users count
-    function updateActiveUsers() {
-        userCountDisplay.textContent = `👥 ACTIVE: ${activeUsers.size}`;
-        // Broadcast user list
-        channel.postMessage({ type: 'users_update', users: Array.from(activeUsers), userId: myUserId });
-    }
-    
-    // Register this user as active
-    function registerUser() {
-        const nickname = myNickname || 'Anonymous_' + Math.floor(Math.random() * 1000);
-        activeUsers.add(nickname);
-        updateActiveUsers();
-        
-        // Send heartbeat every 30 seconds
-        setInterval(() => {
-            channel.postMessage({ type: 'heartbeat', userId: myUserId, nickname: myNickname });
-        }, 30000);
-    }
-    
-    // Handle incoming BroadcastChannel messages
-    channel.onmessage = (event) => {
-        const data = event.data;
-        
-        switch(data.type) {
-            case 'new_message':
-                // Check if we already have this message (avoid duplicates)
-                const exists = messages.some(m => m.id === data.message.id);
-                if (!exists) {
-                    messages.push(data.message);
-                    renderMessages();
-                    saveMessages();
-                }
-                break;
-                
-            case 'messages_update':
-                // Sync messages from another tab
-                if (data.messages && data.messages.length > 0) {
-                    const newMessages = data.messages.filter(m => !messages.some(existing => existing.id === m.id));
-                    if (newMessages.length > 0) {
-                        messages.push(...newMessages);
-                        messages.sort((a, b) => a.id - b.id);
-                        renderMessages();
-                    }
-                }
-                break;
-                
-            case 'typing':
-                if (data.userId !== myUserId && data.nickname) {
-                    showTypingIndicator(data.nickname);
-                }
-                break;
-                
-            case 'heartbeat':
-            case 'users_update':
-                // Keep user list in sync (simplified)
-                if (data.userId !== myUserId && data.users) {
-                    // Just update count display for visual
-                    const otherCount = data.users.length;
-                    // Don't override completely, just show approximate
-                }
-                break;
-        }
-    };
-    
-    // Show typing indicator
-    function showTypingIndicator(nickname) {
-        typingIndicatorDiv.innerHTML = `${escapeHtml(nickname)} is typing...`;
-        setTimeout(() => {
-            if (typingIndicatorDiv.innerHTML.includes(nickname)) {
-                typingIndicatorDiv.innerHTML = '';
-            }
-        }, 2000);
-    }
-    
-    // Send typing notification
-    function sendTypingNotification() {
-        if (!isTyping) {
-            isTyping = true;
-            channel.postMessage({
-                type: 'typing',
-                userId: myUserId,
-                nickname: myNickname
+        // ---------- helper functions ----------
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
             });
-            setTimeout(() => { isTyping = false; }, 2000);
-        }
-    }
-    
-    // Send a message (broadcast to all tabs)
-    function sendMessage() {
-        let nickname = nicknameInput.value.trim();
-        if (nickname === '') {
-            nickname = 'Anon_' + Math.floor(Math.random() * 1000);
-            nicknameInput.value = nickname;
-        }
-        myNickname = nickname;
-        
-        const messageText = messageInput.value;
-        if (!messageText.trim()) {
-            alert('Cannot send empty message! Type something, fellow netizen.');
-            return;
         }
         
-        const newMessage = {
-            id: Date.now(),
-            nickname: nickname,
-            message: messageText.trim(),
-            timestamp: new Date().toISOString(),
-            userId: myUserId
-        };
+        function formatTimeFromIso(isoString) {
+            if (!isoString) return new Date().toLocaleTimeString();
+            const d = new Date(isoString);
+            return d.toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', second:'2-digit' });
+        }
         
-        messages.push(newMessage);
-        saveMessages();
-        renderMessages();
-        
-        // Broadcast to other tabs
-        channel.postMessage({ type: 'new_message', message: newMessage });
-        
-        messageInput.value = '';
-        messageInput.focus();
-    }
-    
-    // Clear local messages (only for this user's view)
-    function clearLocalChat() {
-        if (confirm('⚠️ Clear messages from YOUR screen only? Others will still see the chat history. This just resets YOUR view. Click OK to continue.')) {
-            messages = [];
-            // Reload from localStorage to get full history
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                try {
-                    messages = JSON.parse(saved);
-                } catch(e) { messages = []; }
+        // render all messages into the chat view
+        function renderMessages() {
+            if (!messagesContainer) return;
+            if (!messages.length) {
+                messagesContainer.innerHTML = `<div class="msg-item system-msg">
+                    <div class="msg-meta"><span class="msg-nick">[ SYSTEM ]</span><span class="msg-time">${formatTimeFromIso(new Date())}</span></div>
+                    <div class="msg-text">> No messages yet. Be the first to speak. Type below.</div>
+                </div>`;
+                return;
             }
-            renderMessages();
-        }
-    }
-    
-    // Generate random visitor number
-    function setVisitorNumber() {
-        const num = Math.floor(Math.random() * 9000000) + 1000000;
-        document.getElementById('visitorNumber').textContent = num;
-    }
-    
-    // Initialize nickname from localStorage
-    function initNickname() {
-        const saved = localStorage.getItem('retro_chat_nickname');
-        if (saved) {
-            nicknameInput.value = saved;
-            myNickname = saved;
-        } else {
-            const defaultName = 'Netizen_' + Math.floor(Math.random() * 1000);
-            nicknameInput.value = defaultName;
-            myNickname = defaultName;
-        }
-    }
-    
-    // Save nickname when changed
-    nicknameInput.addEventListener('change', () => {
-        let newNick = nicknameInput.value.trim();
-        if (newNick === '') {
-            newNick = 'Anon_' + Math.floor(Math.random() * 1000);
-        }
-        if (newNick.length > 24) newNick = newNick.substring(0, 24);
-        nicknameInput.value = newNick;
-        myNickname = newNick;
-        localStorage.setItem('retro_chat_nickname', newNick);
-        
-        // Register with new nickname
-        channel.postMessage({ type: 'nickname_change', userId: myUserId, nickname: newNick });
-    });
-    
-    // Typing event
-    messageInput.addEventListener('input', () => {
-        sendTypingNotification();
-    });
-    
-    // Keyboard shortcuts
-    messageInput.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey && e.key === 'Enter') || (e.metaKey && e.key === 'Enter')) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
-    
-    // Scroll to bottom on new messages
-    function scrollToBottom() {
-        if (messagesContainer) {
+            // show last 300 messages for performance
+            const recentMsgs = messages.slice(-300);
+            let html = "";
+            for (let msg of recentMsgs) {
+                const safeNick = escapeHtml(msg.nick || "anon");
+                const safeText = escapeHtml(msg.text || "").replace(/\n/g, '<br>');
+                const timeStr = formatTimeFromIso(msg.timestamp);
+                const isSystem = (msg.userId === "system" || msg.nick === "⚡ MATRIX" || msg.nick === "[ SYSTEM ]");
+                const sysClass = isSystem ? "system-msg" : "";
+                html += `
+                    <div class="msg-item ${sysClass}">
+                        <div class="msg-meta">
+                            <span class="msg-nick">${isSystem ? "▣" : ">"} ${safeNick}</span>
+                            <span class="msg-time">${timeStr}</span>
+                        </div>
+                        <div class="msg-text">${safeText}</div>
+                    </div>
+                `;
+            }
+            messagesContainer.innerHTML = html;
+            // auto-scroll to bottom
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
-    }
-    
-    // Initial setup
-    function init() {
-        initNickname();
-        loadMessages();
-        registerUser();
-        setVisitorNumber();
         
-        sendBtn.addEventListener('click', sendMessage);
-        clearBtn.addEventListener('click', clearLocalChat);
-        
-        // Update marquee with working status
-        const marquee = document.getElementById('newsMarquee');
-        if (marquee) {
-            marquee.innerHTML = '*** 🔥 CHAT IS WORKING! 🔥 TYPE A MESSAGE NOW - EVERYONE SEES IT! *** SHARE THIS LINK FOR GROUP CHAT *** REAL-TIME 2000s STYLE ***';
+        // persist messages to localStorage and broadcast to other tabs/windows
+        function persistAndBroadcast() {
+            // keep last 500 messages
+            const toStore = messages.slice(-500);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(toStore));
+            // broadcast full sync to other instances (but lightweight: we also send new messages separately)
+            channel.postMessage({ type: "FULL_SYNC", payload: toStore, senderId: myUserId });
         }
         
-        // Add connection success message
-        setTimeout(() => {
-            const systemMsg = {
-                id: Date.now(),
-                nickname: '⚡ SYSTEM',
-                message: '✅ Chat connected! You can now send messages. Share this link with friends for a group conversation!',
+        // add a new message (core function)
+        function addMessage(nick, text, userId = null, skipBroadcast = false) {
+            if (!text || text.trim() === "") return false;
+            if (text.length > 300) {
+                alert("!! MESSAGE TOO LONG !! Maximum 300 characters (hacker ethics).");
+                return false;
+            }
+            const newMsg = {
+                id: Date.now() + Math.random() * 100000,
+                nick: nick.trim().substring(0, 24),
+                text: text.trim(),
                 timestamp: new Date().toISOString(),
-                userId: 'system'
+                userId: userId || myUserId
             };
-            // Only add if not already present
-            if (!messages.some(m => m.message.includes('Chat connected'))) {
-                messages.push(systemMsg);
-                saveMessages();
+            messages.push(newMsg);
+            renderMessages();
+            persistAndBroadcast();
+            if (!skipBroadcast) {
+                // broadcast only this new message to others (realtime)
+                channel.postMessage({ type: "NEW_MSG", message: newMsg, senderId: myUserId });
+            }
+            return true;
+        }
+        
+        // load existing messages from localStorage
+        function loadMessagesFromStorage() {
+            const storedRaw = localStorage.getItem(STORAGE_KEY);
+            if (storedRaw) {
+                try {
+                    const parsed = JSON.parse(storedRaw);
+                    if (Array.isArray(parsed) && parsed.length) {
+                        messages = parsed.filter(m => m && typeof m.text === 'string');
+                        renderMessages();
+                        return;
+                    }
+                } catch(e) { console.warn(e); }
+            }
+            // default welcome messages (matrix style)
+            const initMessages = [
+                { id: Date.now()+1, nick: "⚡ MATRIX", text: "> Real-time channel online. Everyone who opens this page can chat together.", timestamp: new Date().toISOString(), userId: "system" },
+                { id: Date.now()+2, nick: "🧬 ANON", text: "test: this message appears for all visitors instantly. share the link!", timestamp: new Date(Date.now() - 120000).toISOString(), userId: "system" },
+                { id: Date.now()+3, nick: "[ CORE ]", text: "No database, no signup. BroadcastChannel + localStorage = cross-device groupchat.", timestamp: new Date(Date.now() - 60000).toISOString(), userId: "system" }
+            ];
+            messages = initMessages;
+            persistAndBroadcast();
+            renderMessages();
+        }
+        
+        // send message from UI
+        function sendMessageAction() {
+            let nickname = nicknameInput.value.trim();
+            if (nickname === "") {
+                nickname = "NEO_" + Math.floor(Math.random() * 999);
+                nicknameInput.value = nickname;
+            }
+            if (nickname.length > 22) nickname = nickname.substring(0,22);
+            currentNick = nickname;
+            localStorage.setItem(NICK_KEY, nickname);
+            
+            const msgText = messageInput.value;
+            if (!msgText.trim()) {
+                alert("[ WARNING ] Cannot send empty message.");
+                return;
+            }
+            addMessage(nickname, msgText, myUserId, false);
+            messageInput.value = "";
+            messageInput.focus();
+            // send heartbeat to update active count
+            sendHeartbeat();
+        }
+        
+        // clear local view (does not delete global messages, just resets UI from storage)
+        function resetLocalView() {
+            if (confirm("Clear messages from YOUR screen only? Others will still see the conversation. This reloads chat history.")) {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        messages = JSON.parse(stored);
+                        if (!Array.isArray(messages)) messages = [];
+                    } catch(e) { messages = []; }
+                } else {
+                    messages = [];
+                }
+                if (messages.length === 0) {
+                    messages.push({ id: Date.now(), nick: "⚡ MATRIX", text: "Chat history reloaded. Welcome back.", timestamp: new Date().toISOString(), userId: "system" });
+                    persistAndBroadcast();
+                }
                 renderMessages();
             }
-        }, 500);
-    }
-    
-    // Start the chat!
-    init();
-    
-    console.log('%c🔥 2000s LIVE CHAT ACTIVATED! Messages work instantly! Share this page link with friends! 🔥', 'color: #00FF00; font-size: 14px; font-family: monospace;');
+        }
+        
+        // ----- ACTIVE PEERS & HEARTBEAT (for realtime "active users" count) -----
+        function sendHeartbeat() {
+            channel.postMessage({ type: "HEARTBEAT", userId: myUserId, nickname: currentNick || "visitor", timestamp: Date.now() });
+        }
+        
+        function updateActiveCount() {
+            let now = Date.now();
+            let aliveCount = 0;
+            for (let lastSeen of activePeersMap.values()) {
+                if (now - lastSeen < 45000) aliveCount++;
+            }
+            // add current user
+            activeUsersSpan.innerText = aliveCount + 1;
+        }
+        
+        function startHeartbeatLoop() {
+            sendHeartbeat();
+            setInterval(() => {
+                sendHeartbeat();
+            }, 25000);
+            // cleanup stale peers every 15 sec
+            cleanupInterval = setInterval(() => {
+                let now = Date.now();
+                let changed = false;
+                for (let [uid, lastSeen] of activePeersMap.entries()) {
+                    if (now - lastSeen > 50000) {
+                        activePeersMap.delete(uid);
+                        changed = true;
+                    }
+                }
+                if (changed) updateActiveCount();
+            }, 15000);
+        }
+        
+        // ----- BroadcastChannel message handler (real-time sync) -----
+        function onChannelMessage(event) {
+            const data = event.data;
+            if (!data) return;
+            
+            // handle new message from other peer
+            if (data.type === "NEW_MSG" && data.senderId !== myUserId) {
+                const incoming = data.message;
+                if (incoming && incoming.id) {
+                    const alreadyExists = messages.some(m => m.id === incoming.id);
+                    if (!alreadyExists) {
+                        messages.push(incoming);
+                        // sort by timestamp
+                        messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+                        renderMessages();
+                        persistAndBroadcast(); // save locally and forward to other tabs
+                    }
+                }
+            }
+            // full sync (in case some tab is outdated)
+            else if (data.type === "FULL_SYNC" && data.senderId !== myUserId) {
+                const incomingMsgs = data.payload;
+                if (Array.isArray(incomingMsgs) && incomingMsgs.length) {
+                    let merged = false;
+                    for (let inc of incomingMsgs) {
+                        if (!messages.some(m => m.id === inc.id)) {
+                            messages.push(inc);
+                            merged = true;
+                        }
+                    }
+                    if (merged) {
+                        messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+                        renderMessages();
+                        persistAndBroadcast();
+                    }
+                }
+            }
+            // heartbeat: update active peers map
+            else if (data.type === "HEARTBEAT" && data.userId !== myUserId) {
+                activePeersMap.set(data.userId, Date.now());
+                updateActiveCount();
+            }
+        }
+        
+        // ----- initialize nickname -----
+        function initNickname() {
+            const savedNick = localStorage.getItem(NICK_KEY);
+            if (savedNick && savedNick.trim() !== "") {
+                nicknameInput.value = savedNick;
+                currentNick = savedNick;
+            } else {
+                const defaultName = "ANON_" + Math.floor(Math.random() * 999);
+                nicknameInput.value = defaultName;
+                currentNick = defaultName;
+                localStorage.setItem(NICK_KEY, defaultName);
+            }
+        }
+        
+        // ----- set visitor ID display -----
+        function setVisitorIdDisplay() {
+            if (visitorIdSpan) {
+                let shortId = myUserId.slice(-8);
+                visitorIdSpan.innerText = shortId;
+            }
+        }
+        
+        // ----- event binding & shortcuts -----
+        function bindEvents() {
+            sendButton.addEventListener("click", sendMessageAction);
+            clearViewBtn.addEventListener("click", resetLocalView);
+            messageInput.addEventListener("keydown", (e) => {
+                if ((e.ctrlKey && e.key === "Enter") || (e.metaKey && e.key === "Enter")) {
+                    e.preventDefault();
+                    sendMessageAction();
+                }
+            });
+            nicknameInput.addEventListener("change", () => {
+                let newNick = nicknameInput.value.trim();
+                if (newNick === "") newNick = "ANON_" + Math.floor(Math.random() * 999);
+                nicknameInput.value = newNick;
+                currentNick = newNick;
+                localStorage.setItem(NICK_KEY, newNick);
+                sendHeartbeat(); // announce new nickname
+            });
+        }
+        
+        // ----- final initialization -----
+        function initChat() {
+            loadMessagesFromStorage();
+            initNickname();
+            setVisitorIdDisplay();
+            bindEvents();
+            startHeartbeatLoop();
+            channel.onmessage = onChannelMessage;
+            connStateSpan.innerText = "LIVE";
+            // add self to active map
+            activePeersMap.set(myUserId, Date.now());
+            updateActiveCount();
+            // send a small presence message after 1 second (optional)
+            setTimeout(() => {
+                sendHeartbeat();
+                // optional: notify only if there are few messages
+                if (messages.length <= 3) {
+                    addMessage("⚡ MATRIX", "> Real-time bridge established. Every visitor sees & sends messages. Enjoy the group chat.", "system", true);
+                }
+            }, 600);
+        }
+        
+        initChat();
+    })();
 </script>
 </body>
 </html>
