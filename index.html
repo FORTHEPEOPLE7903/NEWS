@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>// ANONNEWS // CYBER NEWS NEXUS // MOBILE CHAT</title>
+    <title>// ANONNEWS // CYBER NEWS NEXUS // MOBILE CHAT + SNAKE</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none; /* avoid accidental selection on game, but fine */
         }
 
         body {
@@ -97,7 +98,7 @@
             gap: 16px;
         }
 
-        /* CHAT PANEL - FULLY RESPONSIVE FOR MOBILE */
+        /* CHAT PANEL + SNAKE CONTAINER - FULLY RESPONSIVE */
         .chat-panel {
             flex: 0.9;
             min-width: 260px;
@@ -158,6 +159,91 @@
         .chatango-embed {
             width: 100% !important;
             max-width: 100% !important;
+        }
+
+        /* ----- SNAKE GAME SECTION (BELOW CHATBOX) ----- */
+        .snake-arcade {
+            margin-top: 20px;
+            background: #030d03;
+            border-radius: 14px;
+            border: 1px solid #2c9e2c;
+            padding: 12px;
+            transition: all 0.2s;
+        }
+
+        .snake-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            color: #96f096;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-bottom: 1px dashed #2f8f2f;
+            padding-bottom: 8px;
+        }
+
+        .snake-score {
+            background: #0a1a0a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .game-canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #010501;
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        canvas#snakeCanvas {
+            background-color: #051005;
+            box-shadow: 0 0 0 2px #1b6e1b, 0 0 0 4px #0a2a0a;
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .snake-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .snake-btn {
+            background: #0e1f0e;
+            border: 1px solid #2e9e2e;
+            color: #9eff9e;
+            font-family: monospace;
+            font-weight: bold;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .snake-btn:hover {
+            background: #1e3a1e;
+            box-shadow: 0 0 6px #2eff2e;
+            color: white;
+        }
+
+        .mobile-swipe-hint {
+            font-size: 9px;
+            text-align: center;
+            margin-top: 10px;
+            color: #4fae4f;
         }
 
         .news-card {
@@ -314,13 +400,14 @@
             .chat-container { min-height: 300px; }
             .chat-panel, .news-primary, .news-secondary { min-width: 100%; }
             .matrix-grid { gap: 14px; }
+            canvas#snakeCanvas { max-width: 100%; height: auto; }
         }
 
         @media (max-width: 480px) {
             .chat-container { min-height: 280px; padding: 6px; }
-            .news-card h3 { font-size: 1rem; }
-            .section-badge { font-size: 0.65rem; }
-            .refresh-news { padding: 5px 12px; font-size: 0.65rem; }
+            .snake-header { font-size: 0.7rem; }
+            .snake-btn { padding: 5px 12px; font-size: 0.7rem; }
+            .mobile-swipe-hint { font-size: 8px; }
         }
     </style>
 </head>
@@ -335,7 +422,7 @@
 ║ ██╔══██║██║╚██╗██║██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██║███╗██║╚════██║   ║
 ║ ██║  ██║██║ ╚████║╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚███╔███╔╝███████║   ║
 ║ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝   ║
-║           [ ANONNEWS // MOBILE CYBER HUB + ENCRYPTED CHAT ]                  ║
+║           [ ANONNEWS // MOBILE CYBER HUB + ENCRYPTED CHAT + SNAKE ]          ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
         </pre>
     </div>
@@ -345,6 +432,7 @@
         <span>📡 SYNC: <span id="newsSyncTime">—</span> <span class="blink">⏺</span></span>
         <span>⏱️ <span id="liveClock" class="live-clock">--:--:--</span></span>
         <span>💬 CHAT: <span id="chatStatus">ENCRYPTED</span></span>
+        <span>🐍 SNAKE: ACTIVE</span>
         <span>📱 MOBILE READY</span>
     </div>
 
@@ -382,7 +470,7 @@
             </div>
         </div>
 
-        <!-- CHAT PANEL: UPDATED CHATANGO WIDGET (MOBILE OPTIMIZED) -->
+        <!-- CHAT PANEL + SNAKE GAME BELOW IT -->
         <div class="chat-panel">
             <div class="chat-header">
                 <span>💬 █ UNDERGROUND CHANNEL</span>
@@ -391,20 +479,38 @@
             <div class="chat-container" id="chatContainer">
                 <div id="chatangoWidget" class="chatango-wrapper"></div>
             </div>
-            <div style="font-size: 9px; margin-top: 10px; text-align: center; color: #3c9e3c;">
+            <div style="font-size: 9px; margin-top: 10px; margin-bottom: 6px; text-align: center; color: #3c9e3c;">
                 🔐 anonymous • encrypted • zero logs • mobile friendly
+            </div>
+            
+            <!-- *************** SNAKE GAME ADDED BELOW CHATBOX *************** -->
+            <div class="snake-arcade">
+                <div class="snake-header">
+                    <span>🐍 █ NEXUS SNAKE // RETRO BYTE</span>
+                    <span class="snake-score">SCORE: <span id="snakeScore">0</span></span>
+                </div>
+                <div class="game-canvas-container">
+                    <canvas id="snakeCanvas" width="400" height="400" style="width:100%; height:auto; max-width:400px; aspect-ratio:1/1"></canvas>
+                </div>
+                <div class="snake-controls">
+                    <button class="snake-btn" id="resetSnakeBtn">⟳ RESTART</button>
+                    <button class="snake-btn" id="pauseSnakeBtn">⏸️ PAUSE</button>
+                </div>
+                <div class="mobile-swipe-hint">
+                    ▲ ▼ ◀ ▶ &nbsp;&nbsp;|&nbsp;&nbsp; swipe/keys
+                </div>
             </div>
         </div>
     </div>
     <div class="footer">
-        [ ANONNEWS v5.0 MOBILE ] — perpetual sync • live headlines + encrypted chat • nexus protocol
+        [ ANONNEWS v5.0 MOBILE + SNAKE MODULE ] — perpetual sync • live headlines + encrypted chat • classic snake
     </div>
 </div>
 
 <script>
     (function(){
         // ██████████████████████████████████████████████████████████████████████████
-        // ANONNEWS - MOBILE OPTIMIZED - FOREVER NEWS + UPDATED CHATANGO WIDGET
+        // ANONNEWS - MOBILE OPTIMIZED - FOREVER NEWS + UPDATED CHATANGO WIDGET + SNAKE
         // Live clock, BBC World News + CryptoCompare, auto-refresh, chat with new config
         // ██████████████████████████████████████████████████████████████████████████
         
@@ -546,14 +652,12 @@
             }, 19000);
         }
         
-        // ----- 6. UPDATED CHATANGO INTEGRATION (NEW CONFIGURATION FROM USER) -----
+        // ----- 6. UPDATED CHATANGO INTEGRATION -----
         function loadChatangoWidget() {
             return new Promise((resolve, reject) => {
                 const widgetContainer = document.getElementById('chatangoWidget');
                 if (!widgetContainer) return reject('No container');
                 widgetContainer.innerHTML = '';
-                
-                // Create script element with the exact updated configuration
                 const script = document.createElement('script');
                 script.id = "cid0020000437397109464";
                 script.setAttribute('data-cfasync', 'false');
@@ -563,8 +667,6 @@
                 script.style.height = "100%";
                 script.style.minWidth = "250px";
                 script.style.minHeight = "350px";
-                
-                // Updated config exactly as provided (without fwtickm, matching user specs)
                 const chatConfig = {
                     handle: "chat2000site",
                     arch: "js",
@@ -586,15 +688,10 @@
                         sbc: "33cc00"
                     }
                 };
-                
                 script.textContent = JSON.stringify(chatConfig);
-                
-                // Responsive handling: ensure iframe scales on mobile
                 script.onload = () => {
-                    console.log("Chatango mobile widget loaded");
                     const chatStatusSpan = document.getElementById('chatStatus');
                     if(chatStatusSpan) chatStatusSpan.innerText = "ACTIVE";
-                    // Apply responsive fixes to any iframe created by Chatango
                     setTimeout(() => {
                         const iframes = widgetContainer.querySelectorAll('iframe');
                         iframes.forEach(iframe => {
@@ -607,32 +704,20 @@
                     }, 500);
                     resolve();
                 };
-                script.onerror = (err) => {
-                    console.error("Chatango load error", err);
+                script.onerror = () => {
                     widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ CHAT OFFLINE // RETRY</div>';
                     const chatStatusSpan = document.getElementById('chatStatus');
                     if(chatStatusSpan) chatStatusSpan.innerText = "STANDBY";
-                    reject(err);
+                    reject();
                 };
-                
                 widgetContainer.appendChild(script);
-                
-                // additional CSS to ensure mobile scaling
                 const style = document.createElement('style');
                 style.textContent = `
-                    .chatango-wrapper iframe, 
-                    .chatango-wrapper object {
+                    .chatango-wrapper iframe, .chatango-wrapper object {
                         width: 100% !important;
                         max-width: 100% !important;
                         min-width: 220px !important;
                         border-radius: 10px !important;
-                        border: 1px solid #2b9a2b !important;
-                    }
-                    @media (max-width: 600px) {
-                        .chatango-wrapper iframe {
-                            min-height: 300px !important;
-                            height: 300px !important;
-                        }
                     }
                 `;
                 document.head.appendChild(style);
@@ -641,15 +726,11 @@
         
         let chatLoadAttempts = 0;
         function ensureChatWidget() {
-            loadChatangoWidget().catch((err) => {
-                console.warn("Chat load failed, retrying", err);
+            loadChatangoWidget().catch(() => {
                 setTimeout(() => {
                     if(chatLoadAttempts < 4) {
                         chatLoadAttempts++;
                         ensureChatWidget();
-                    } else {
-                        const widgetContainer = document.getElementById('chatangoWidget');
-                        if(widgetContainer) widgetContainer.innerHTML = '<div style="color:#6f9e6f;text-align:center;padding:20px;">💬 CHAT NEXUS // REFRESH TO RECONNECT</div>';
                     }
                 }, 7000);
             });
@@ -683,7 +764,215 @@
             setInterval(() => { refreshAllNews(); }, 25 * 60 * 1000);
         }
         
-        // ----- 8. INITIALIZE EVERYTHING (FOREVER + MOBILE) -----
+        // ----- 8. SNAKE GAME (MODERN CLASSIC) -----
+        function initSnakeGame() {
+            const canvas = document.getElementById('snakeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const scoreSpan = document.getElementById('snakeScore');
+            const resetBtn = document.getElementById('resetSnakeBtn');
+            const pauseBtn = document.getElementById('pauseSnakeBtn');
+            
+            let gameInterval = null;
+            let isPaused = false;
+            let snake = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
+            let direction = 'RIGHT';
+            let nextDirection = 'RIGHT';
+            let food = {x: 15, y: 10};
+            let score = 0;
+            let gameActive = true;
+            const gridSize = 20;
+            const cellSize = canvas.width / gridSize;
+            
+            function generateRandomFood() {
+                const freeCells = [];
+                for (let i = 0; i < gridSize; i++) {
+                    for (let j = 0; j < gridSize; j++) {
+                        if (!snake.some(seg => seg.x === i && seg.y === j)) {
+                            freeCells.push({x: i, y: j});
+                        }
+                    }
+                }
+                if (freeCells.length === 0) return null;
+                const rand = Math.floor(Math.random() * freeCells.length);
+                return freeCells[rand];
+            }
+            
+            function drawGame() {
+                if (!ctx) return;
+                ctx.fillStyle = '#051005';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // draw grid
+                ctx.strokeStyle = '#1c481c';
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i <= gridSize; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(i * cellSize, 0);
+                    ctx.lineTo(i * cellSize, canvas.height);
+                    ctx.stroke();
+                    ctx.moveTo(0, i * cellSize);
+                    ctx.lineTo(canvas.width, i * cellSize);
+                    ctx.stroke();
+                }
+                // snake
+                snake.forEach((segment, idx) => {
+                    const grad = ctx.createRadialGradient(segment.x*cellSize+3, segment.y*cellSize+3, 2, segment.x*cellSize+5, segment.y*cellSize+5, 6);
+                    grad.addColorStop(0, '#44dd44');
+                    grad.addColorStop(1, '#118811');
+                    ctx.fillStyle = idx === 0 ? '#88ff88' : grad;
+                    ctx.fillRect(segment.x * cellSize + 1, segment.y * cellSize + 1, cellSize - 2, cellSize - 2);
+                    if(idx === 0) {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(segment.x * cellSize + 4, segment.y * cellSize + 4, 4, 4);
+                    }
+                });
+                // food
+                ctx.fillStyle = '#ff5555';
+                ctx.shadowBlur = 5;
+                ctx.fillRect(food.x * cellSize + 2, food.y * cellSize + 2, cellSize - 4, cellSize - 4);
+                ctx.fillStyle = '#ffaa55';
+                ctx.fillRect(food.x * cellSize + 5, food.y * cellSize + 5, 3, 3);
+                ctx.shadowBlur = 0;
+            }
+            
+            function moveSnake() {
+                if (!gameActive || isPaused) return;
+                direction = nextDirection;
+                const head = snake[0];
+                let newHead = { ...head };
+                switch(direction) {
+                    case 'RIGHT': newHead.x += 1; break;
+                    case 'LEFT': newHead.x -= 1; break;
+                    case 'UP': newHead.y -= 1; break;
+                    case 'DOWN': newHead.y += 1; break;
+                }
+                // check food collision
+                let ate = (newHead.x === food.x && newHead.y === food.y);
+                snake.unshift(newHead);
+                if (!ate) snake.pop();
+                else {
+                    score++;
+                    if(scoreSpan) scoreSpan.innerText = score;
+                    const newFood = generateRandomFood();
+                    if (newFood) food = newFood;
+                    else { gameWin(); return; }
+                }
+                // collision check
+                if (newHead.x < 0 || newHead.x >= gridSize || newHead.y < 0 || newHead.y >= gridSize ||
+                    snake.slice(1).some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
+                    gameOver();
+                }
+                drawGame();
+            }
+            
+            function gameOver() {
+                if (!gameActive) return;
+                gameActive = false;
+                if (gameInterval) clearInterval(gameInterval);
+                gameInterval = null;
+                ctx.fillStyle = 'rgba(0,30,0,0.85)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.font = 'bold 16px "Courier New", monospace';
+                ctx.fillStyle = '#77ff77';
+                ctx.shadowBlur = 0;
+                ctx.fillText('GAME OVER', canvas.width/2-55, canvas.height/2);
+                ctx.font = '12px monospace';
+                ctx.fillStyle = '#55aa55';
+                ctx.fillText('press RESTART', canvas.width/2-45, canvas.height/2+30);
+                if(scoreSpan) scoreSpan.innerText = score;
+            }
+            
+            function gameWin() {
+                if (!gameActive) return;
+                gameActive = false;
+                if (gameInterval) clearInterval(gameInterval);
+                gameInterval = null;
+                ctx.fillStyle = 'rgba(0,20,0,0.9)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.font = 'bold 14px monospace';
+                ctx.fillStyle = '#d4ff00';
+                ctx.fillText('✦ PERFECT WIN ✦', canvas.width/2-65, canvas.height/2);
+            }
+            
+            function resetGame() {
+                if (gameInterval) clearInterval(gameInterval);
+                snake = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
+                direction = 'RIGHT';
+                nextDirection = 'RIGHT';
+                score = 0;
+                if(scoreSpan) scoreSpan.innerText = '0';
+                gameActive = true;
+                isPaused = false;
+                if(pauseBtn) pauseBtn.innerText = '⏸️ PAUSE';
+                const possibleFood = generateRandomFood();
+                if(possibleFood) food = possibleFood;
+                else food = {x: 5, y: 5};
+                drawGame();
+                startGameLoop();
+            }
+            
+            function startGameLoop() {
+                if (gameInterval) clearInterval(gameInterval);
+                gameInterval = setInterval(() => { moveSnake(); }, 150);
+            }
+            
+            function togglePause() {
+                if (!gameActive) { resetGame(); return; }
+                isPaused = !isPaused;
+                if(pauseBtn) pauseBtn.innerText = isPaused ? '▶️ RESUME' : '⏸️ PAUSE';
+                if(!isPaused && gameActive) {
+                    drawGame();
+                } else if(isPaused) {
+                    ctx.fillStyle = 'rgba(0,20,0,0.7)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#8aff8a';
+                    ctx.font = '12px monospace';
+                    ctx.fillText('PAUSED', canvas.width/2-25, canvas.height/2);
+                }
+            }
+            
+            window.addEventListener('keydown', (e) => {
+                const key = e.key;
+                if (!gameActive || isPaused) return;
+                if (key === 'ArrowUp' && direction !== 'DOWN') nextDirection = 'UP';
+                else if (key === 'ArrowDown' && direction !== 'UP') nextDirection = 'DOWN';
+                else if (key === 'ArrowLeft' && direction !== 'RIGHT') nextDirection = 'LEFT';
+                else if (key === 'ArrowRight' && direction !== 'LEFT') nextDirection = 'RIGHT';
+                e.preventDefault();
+            });
+            
+            // touch / mobile swipe basics
+            let touchStart = null;
+            canvas.addEventListener('touchstart', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                touchStart = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+                e.preventDefault();
+            });
+            canvas.addEventListener('touchend', (e) => {
+                if (!touchStart || !gameActive || isPaused) { touchStart = null; return; }
+                const rect = canvas.getBoundingClientRect();
+                const endX = e.changedTouches[0].clientX - rect.left;
+                const endY = e.changedTouches[0].clientY - rect.top;
+                const dx = endX - touchStart.x;
+                const dy = endY - touchStart.y;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 15) {
+                    if (dx > 0 && direction !== 'LEFT') nextDirection = 'RIGHT';
+                    else if (dx < 0 && direction !== 'RIGHT') nextDirection = 'LEFT';
+                } else if (Math.abs(dy) > 15) {
+                    if (dy > 0 && direction !== 'UP') nextDirection = 'DOWN';
+                    else if (dy < 0 && direction !== 'DOWN') nextDirection = 'UP';
+                }
+                touchStart = null;
+                e.preventDefault();
+            });
+            
+            resetBtn.addEventListener('click', () => { resetGame(); });
+            pauseBtn.addEventListener('click', () => { togglePause(); });
+            resetGame();
+        }
+        
+        // ----- 9. INITIALIZE EVERYTHING -----
         async function init() {
             initLiveClock();
             bindRefreshButtons();
@@ -691,8 +980,9 @@
             await refreshAllNews();
             startAutoRefresh();
             ensureChatWidget();
+            initSnakeGame();   // Snake loaded under chat
             const titleEl = document.querySelector('title');
-            if(titleEl) titleEl.innerText = 'ANONNEWS // MOBILE CYBER HUB';
+            if(titleEl) titleEl.innerText = 'ANONNEWS // MOBILE CYBER HUB + SNAKE';
         }
         
         window.addEventListener('DOMContentLoaded', init);
