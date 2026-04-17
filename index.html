@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>// ANONNEWS // CYBER NEWS NEXUS // LIVE CHAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>// ANONNEWS // CYBER NEWS NEXUS // MOBILE CHAT</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             background-size: 42px 42px;
             color: #0f0;
             font-family: 'Courier New', 'Fira Code', monospace;
-            padding: 20px;
+            padding: 12px;
             min-height: 100vh;
         }
 
@@ -27,31 +27,34 @@
             background: #030a03;
             border: 2px solid #1f9a1f;
             box-shadow: 0 0 18px rgba(0, 255, 0, 0.3);
-            padding: 18px 22px;
+            padding: 15px 18px;
             border-radius: 12px;
             backdrop-filter: blur(0.5px);
         }
 
         .ascii-header pre {
-            font-size: 9px;
+            font-size: 7px;
             color: #1eff1e;
             text-align: center;
             white-space: pre;
             overflow-x: auto;
             font-weight: bold;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             text-shadow: 0 0 3px #0f0;
+            line-height: 1.2;
         }
 
         .status-line {
             background: #071007;
             border-left: 5px solid #33ff33;
-            padding: 10px 14px;
-            margin: 15px 0 20px 0;
+            padding: 8px 12px;
+            margin: 12px 0 16px 0;
             display: flex;
-            justify-content: space-between;
             flex-wrap: wrap;
-            font-size: 13px;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
             border-radius: 6px;
             font-weight: bold;
         }
@@ -65,43 +68,43 @@
             50% { opacity: 0; }
         }
 
-        /* MAIN LAYOUT: 3-COLUMN FLEXIBLE GRID (NEWS + CHAT) */
+        /* MOBILE-FIRST FLEXIBLE GRID */
         .matrix-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 24px;
+            gap: 18px;
             margin-top: 8px;
         }
 
         .news-primary {
             flex: 2;
-            min-width: 280px;
-            background: #020802;
-            border: 1px solid #1f7a1f;
-            border-radius: 14px;
-            padding: 20px;
-        }
-
-        .news-secondary {
-            flex: 1.2;
             min-width: 260px;
             background: #020802;
             border: 1px solid #1f7a1f;
             border-radius: 14px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            padding: 16px;
         }
 
-        /* CHAT PANEL - MATRIX STYLED */
-        .chat-panel {
-            flex: 0.9;
-            min-width: 270px;
+        .news-secondary {
+            flex: 1.2;
+            min-width: 240px;
             background: #020802;
             border: 1px solid #1f7a1f;
             border-radius: 14px;
-            padding: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* CHAT PANEL - FULLY RESPONSIVE FOR MOBILE */
+        .chat-panel {
+            flex: 0.9;
+            min-width: 260px;
+            background: #020802;
+            border: 1px solid #1f7a1f;
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
         }
@@ -109,55 +112,64 @@
         .chat-header {
             border-bottom: 1px dashed #2c9e2c;
             padding-bottom: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 8px;
             color: #b3ffb3;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .chat-container {
             background: #051005;
             border-radius: 12px;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 380px;
-            border: 1px solid #2b6e2b;
-        }
-
-        .chat-container iframe, 
-        .chat-container object, 
-        .chat-embed {
-            width: 100%;
-            height: 100%;
             min-height: 350px;
-            border-radius: 8px;
+            border: 1px solid #2b6e2b;
+            width: 100%;
         }
 
-        /* Wrapper for Chatango to maintain responsiveness */
+        /* Chatango widget responsive wrapper */
         .chatango-wrapper {
             width: 100%;
             display: flex;
             justify-content: center;
+            align-items: center;
             background: #000000;
             border-radius: 8px;
             overflow: hidden;
         }
 
+        .chatango-wrapper iframe,
+        .chatango-wrapper object,
+        .chatango-wrapper embed {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        /* Force Chatango embed to be responsive */
+        #chatangoWidget script + div,
+        .chatango-embed {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
         .news-card {
             background: #051005;
             border-left: 4px solid #33dd33;
-            padding: 16px;
+            padding: 14px;
             border-radius: 8px;
         }
 
         .news-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 16px;
+            font-size: 1.1rem;
+            margin-bottom: 14px;
             color: #b3ffb3;
             letter-spacing: 1px;
             display: flex;
@@ -165,20 +177,21 @@
             gap: 8px;
             border-bottom: 1px dashed #2c9e2c;
             padding-bottom: 8px;
+            flex-wrap: wrap;
         }
 
         .news-list {
             list-style: none;
-            max-height: 480px;
+            max-height: 420px;
             overflow-y: auto;
-            padding-right: 6px;
+            padding-right: 5px;
         }
 
         .news-list li {
-            margin-bottom: 18px;
-            padding-bottom: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
             border-bottom: 1px solid #1f4a1f;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .news-list a {
@@ -197,9 +210,9 @@
         }
 
         .news-meta {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #479647;
-            margin-top: 8px;
+            margin-top: 6px;
             display: block;
         }
 
@@ -207,12 +220,12 @@
             background: #0a1a0a;
             border: 1px solid #2b9a2b;
             color: #8eff8e;
-            padding: 8px 18px;
+            padding: 6px 16px;
             font-family: monospace;
             font-weight: bold;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             transition: 0.2s;
             margin-top: 12px;
             width: fit-content;
@@ -225,36 +238,36 @@
         }
 
         .timestamp-badge {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             background: #0a120a;
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             color: #6fc96f;
             text-align: center;
         }
 
         .section-badge {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             background: #0a1f0a;
             display: inline-block;
-            padding: 2px 14px;
+            padding: 2px 12px;
             border-radius: 20px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             color: #26d926;
         }
 
         .footer {
             text-align: center;
-            margin-top: 32px;
-            font-size: 10px;
+            margin-top: 28px;
+            font-size: 9px;
             color: #2e822e;
             border-top: 1px solid #1d5a1d;
-            padding-top: 16px;
+            padding-top: 14px;
         }
 
         ::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
             background: #031003;
         }
 
@@ -265,7 +278,7 @@
 
         .error-placeholder {
             color: #ff8080;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             padding: 8px;
             text-align: center;
         }
@@ -273,34 +286,41 @@
         .crypto-ticker {
             background: #071007;
             border-radius: 8px;
-            padding: 10px 12px;
-            margin-top: 8px;
+            padding: 8px 10px;
+            margin-top: 6px;
             border: 1px solid #2f8f2f;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            text-align: center;
         }
 
         .live-clock {
             font-family: 'Courier New', monospace;
             background: #0a1a0a;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 20px;
             letter-spacing: 1px;
             border: 1px solid #2b9a2b;
+            font-size: 11px;
         }
 
-        @media (max-width: 1100px) {
-            .matrix-grid {
-                flex-direction: column;
-            }
-            .chat-panel, .news-primary, .news-secondary {
-                width: 100%;
-            }
+        /* Mobile specific adjustments */
+        @media (max-width: 860px) {
+            body { padding: 8px; }
+            .terminal { padding: 12px; }
+            .status-line { font-size: 9px; flex-direction: column; align-items: flex-start; }
+            .live-clock { font-size: 9px; }
+            .ascii-header pre { font-size: 5px; }
+            .news-list { max-height: 320px; }
+            .chat-container { min-height: 300px; }
+            .chat-panel, .news-primary, .news-secondary { min-width: 100%; }
+            .matrix-grid { gap: 14px; }
         }
 
-        @media (max-width: 760px) {
-            body { padding: 12px; }
-            .news-list { max-height: 300px; }
-            .chat-container { min-height: 320px; }
+        @media (max-width: 480px) {
+            .chat-container { min-height: 280px; padding: 6px; }
+            .news-card h3 { font-size: 1rem; }
+            .section-badge { font-size: 0.65rem; }
+            .refresh-news { padding: 5px 12px; font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -308,25 +328,24 @@
 <div class="terminal">
     <div class="ascii-header">
         <pre>
-╔══════════════════════════════════════════════════════════════════════════════════════════╗
-║   █████╗ ███╗   ██╗ ██████╗ ███╗   ██╗███╗   ██╗███████╗██╗    ██╗███████╗    █████╗    ║
-║  ██╔══██╗████╗  ██║██╔═══██╗████╗  ██║████╗  ██║██╔════╝██║    ██║██╔════╝   ██╔══██╗   ║
-║  ███████║██╔██╗ ██║██║   ██║██╔██╗ ██║██╔██╗ ██║█████╗  ██║ █╗ ██║███████╗   ╚█████╔╝   ║
-║  ██╔══██║██║╚██╗██║██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██║███╗██║╚════██║   ██╔══██╗   ║
-║  ██║  ██║██║ ╚████║╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚███╔███╔╝███████║██╗╚█████╔╝██╗║
-║  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚═╝ ╚════╝ ╚═╝║
-║                [ ANONNEWS // CYBER INTELLIGENCE HUB + ENCRYPTED CHAT ]                    ║
-║                     REAL-TIME GLOBAL & CRYPTO HEADLINES | LIVE UNDERGROUND CHAT           ║
-╚══════════════════════════════════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  █████╗ ███╗   ██╗ ██████╗ ███╗   ██╗███╗   ██╗███████╗██╗    ██╗███████╗   ║
+║ ██╔══██╗████╗  ██║██╔═══██╗████╗  ██║████╗  ██║██╔════╝██║    ██║██╔════╝   ║
+║ ███████║██╔██╗ ██║██║   ██║██╔██╗ ██║██╔██╗ ██║█████╗  ██║ █╗ ██║███████╗   ║
+║ ██╔══██║██║╚██╗██║██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██║███╗██║╚════██║   ║
+║ ██║  ██║██║ ╚████║╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚███╔███╔╝███████║   ║
+║ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝ ╚══════╝   ║
+║           [ ANONNEWS // MOBILE CYBER HUB + ENCRYPTED CHAT ]                  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
         </pre>
     </div>
 
     <div class="status-line">
         <span>🟢 ANONNEWS: <span id="newsStatus">LIVE</span></span>
         <span>📡 SYNC: <span id="newsSyncTime">—</span> <span class="blink">⏺</span></span>
-        <span>⏱️ LIVE TIME: <span id="liveClock" class="live-clock">--:--:--</span></span>
+        <span>⏱️ <span id="liveClock" class="live-clock">--:--:--</span></span>
         <span>💬 CHAT: <span id="chatStatus">ENCRYPTED</span></span>
-        <span>🌐 ANONYMOUS • NO TRACKING • FOREVER</span>
+        <span>📱 MOBILE READY</span>
     </div>
 
     <div class="matrix-grid">
@@ -352,53 +371,47 @@
                 <button id="refreshCryptoBtn" class="refresh-news">⟳ UPDATE CRYPTO</button>
             </div>
             
-            <!-- CRYPTO TICKER (matrix vibe) -->
+            <!-- CRYPTO TICKER -->
             <div class="crypto-ticker" id="marketPulseBox">
                 <span style="color:#2fdf2f;">⟳ LIVE TICKER ⟳</span> 
                 <span id="tickerText">BTC $67,420 | ETH $3,212 | SOL $142</span>
             </div>
             
-            <div class="timestamp-badge" id="lastUpdateBadge" style="margin-top: 8px; text-align:center;">
+            <div class="timestamp-badge" id="lastUpdateBadge" style="margin-top: 6px; text-align:center;">
                 last sync: --
             </div>
         </div>
 
-        <!-- CHAT PANEL: CHATANGO FULLY INTEGRATED -->
+        <!-- CHAT PANEL: UPDATED CHATANGO WIDGET (MOBILE OPTIMIZED) -->
         <div class="chat-panel">
             <div class="chat-header">
-                <span>💬 █ UNDERGROUND CHANNEL // SECURE CHAT</span>
-                <span class="blink" style="font-size:10px;">● LIVE</span>
+                <span>💬 █ UNDERGROUND CHANNEL</span>
+                <span class="blink" style="font-size:9px;">● LIVE</span>
             </div>
             <div class="chat-container" id="chatContainer">
-                <!-- Chatango widget will be injected here dynamically with full parameters -->
                 <div id="chatangoWidget" class="chatango-wrapper"></div>
             </div>
-            <div style="font-size: 10px; margin-top: 12px; text-align: center; color: #3c9e3c;">
-                🔐 anonymous • end-to-end encrypted vibes • zero logs
+            <div style="font-size: 9px; margin-top: 10px; text-align: center; color: #3c9e3c;">
+                🔐 anonymous • encrypted • zero logs • mobile friendly
             </div>
         </div>
     </div>
     <div class="footer">
-        [ ANONNEWS v4.0 ] — perpetual realtime sync • encrypted headlines + live chat nexus • stay anonymous
+        [ ANONNEWS v5.0 MOBILE ] — perpetual sync • live headlines + encrypted chat • nexus protocol
     </div>
 </div>
 
 <script>
     (function(){
         // ██████████████████████████████████████████████████████████████████████████
-        // ANONNEWS - FULLY FUNCTIONAL FOREVER NEWS AGGREGATOR + CHATANGO INTEGRATION
-        // - Live digital clock updating every second
-        // - Live news: BBC World RSS + CryptoCompare API (with robust fallbacks)
-        // - Auto-refresh every 25 minutes (forever cycle)
-        // - Manual refresh buttons
-        // - Chatango widget fully integrated and styled
+        // ANONNEWS - MOBILE OPTIMIZED - FOREVER NEWS + UPDATED CHATANGO WIDGET
+        // Live clock, BBC World News + CryptoCompare, auto-refresh, chat with new config
         // ██████████████████████████████████████████████████████████████████████████
         
         // ----- 1. LIVE CLOCK (UPDATES EVERY SECOND) -----
         function initLiveClock() {
             const clockElement = document.getElementById('liveClock');
             if (!clockElement) return;
-            
             function updateClock() {
                 const now = new Date();
                 const hours = String(now.getHours()).padStart(2, '0');
@@ -436,14 +449,12 @@
             const container = document.getElementById('generalNewsList');
             if(!container) return;
             container.innerHTML = '<div class="error-placeholder">🔄 decrypting global headlines...</div>';
-            
             try {
                 const rssUrl = "https://feeds.bbci.co.uk/news/world/rss.xml";
                 const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
                 const response = await fetch(apiUrl, { cache: 'no-store' });
                 if(!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                
                 if(data && data.status === 'ok' && data.items && data.items.length) {
                     const articles = data.items.slice(0, 12);
                     let html = '';
@@ -455,37 +466,23 @@
                             const d = new Date(item.pubDate);
                             pubDate = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
                         }
-                        html += `
-                            <li>
-                                <a href="${link}" target="_blank" rel="noopener noreferrer">🌐 ${title}</a>
-                                <span class="news-meta">📡 live feed • ${pubDate}</span>
-                            </li>
-                        `;
+                        html += `<li><a href="${link}" target="_blank" rel="noopener noreferrer">🌐 ${title}</a><span class="news-meta">📡 live feed • ${pubDate}</span></li>`;
                     }
                     container.innerHTML = html;
-                } else {
-                    throw new Error("RSS data malformed");
-                }
+                } else throw new Error("RSS malformed");
             } catch(err) {
-                console.warn("General news fetch error:", err);
-                const fallbackStories = [
-                    { title: "G20 agrees on global framework for AI safety and transparency", meta: "diplomatic breakthrough • G20 summit" },
-                    { title: "European Central Bank signals rate cuts by Q3 amid easing inflation", meta: "economy & finance • ECB update" },
-                    { title: "Breakthrough in nuclear fusion: new reactor achieves 150% energy gain", meta: "science & future • clean energy" },
-                    { title: "International cyber taskforce dismantles major ransomware network", meta: "cybersecurity • global alliance" },
-                    { title: "Japan unveils next-gen maglev line: Tokyo-Osaka in just 67 minutes", meta: "infrastructure • innovation" },
-                    { title: "UN Climate Summit announces historic deforestation reversal pact", meta: "environment • 2030 goals" },
-                    { title: "SpaceX Starship completes orbital refueling test, moon mission on track", meta: "space exploration • milestones" },
-                    { title: "Global chipmakers unveil 2nm process: 35% faster, 40% efficient", meta: "tech • semiconductor race" }
+                console.warn("General news error, using fallback");
+                const fallback = [
+                    { title: "G20 agrees on global framework for AI safety and transparency", meta: "diplomatic breakthrough" },
+                    { title: "European Central Bank signals rate cuts by Q3 amid easing inflation", meta: "economy & finance" },
+                    { title: "Breakthrough in nuclear fusion: new reactor achieves 150% energy gain", meta: "science & future" },
+                    { title: "International cyber taskforce dismantles major ransomware network", meta: "cybersecurity alliance" },
+                    { title: "Japan unveils next-gen maglev line: Tokyo-Osaka in 67 minutes", meta: "infrastructure innovation" },
+                    { title: "UN Climate Summit announces historic deforestation reversal pact", meta: "environment 2030" }
                 ];
                 let html = '';
-                for(let story of fallbackStories) {
-                    html += `
-                        <li>
-                            <a href="#" style="cursor:default;">🔹 ${escapeHtml(story.title)}</a>
-                            <span class="news-meta">📡 ${escapeHtml(story.meta)}</span>
-                        </li>
-                    `;
+                for(let story of fallback) {
+                    html += `<li><a href="#" style="cursor:default;">🔹 ${escapeHtml(story.title)}</a><span class="news-meta">📡 ${escapeHtml(story.meta)}</span></li>`;
                 }
                 container.innerHTML = html;
             }
@@ -496,13 +493,11 @@
             const container = document.getElementById('cryptoNewsList');
             if(!container) return;
             container.innerHTML = '<div class="error-placeholder">⛏️ mining crypto headlines...</div>';
-            
             try {
                 const cryptoUrl = "https://min-api.cryptocompare.com/news/v1/articlelist?lang=EN&feeds=cointelegraph,coindesk,decrypt,bitcoinist&limit=8&excludeCategories=Sponsored";
                 const response = await fetch(cryptoUrl, { cache: 'no-store' });
                 if(!response.ok) throw new Error(`crypto API error ${response.status}`);
                 const result = await response.json();
-                
                 if(result && result.Data && Array.isArray(result.Data) && result.Data.length) {
                     const articles = result.Data.slice(0, 8);
                     let html = '';
@@ -511,35 +506,21 @@
                         const url = art.url || '#';
                         const source = art.source_info?.name || 'CryptoNews';
                         const published = art.published_on ? new Date(art.published_on * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
-                        html += `
-                            <li>
-                                <a href="${url}" target="_blank" rel="noopener noreferrer">₿ ${title}</a>
-                                <span class="news-meta">🔹 ${escapeHtml(source)}  •  ${published}</span>
-                            </li>
-                        `;
+                        html += `<li><a href="${url}" target="_blank" rel="noopener noreferrer">₿ ${title}</a><span class="news-meta">🔹 ${escapeHtml(source)} • ${published}</span></li>`;
                     }
                     container.innerHTML = html;
-                } else {
-                    throw new Error("No crypto data");
-                }
+                } else throw new Error("No crypto data");
             } catch(err) {
-                console.warn("Crypto news error", err);
+                console.warn("Crypto error, using fallback");
                 const cryptoFallback = [
                     { title: "Bitcoin ETF weekly inflows hit $620M, AUM reaches record high", source: "Institutional wave" },
                     { title: "Ethereum restaking TVL surpasses $14B as EigenLayer expands", source: "DeFi pulse" },
                     { title: "Solana hits 2.4M daily active addresses, memecoin volume surges", source: "Network metrics" },
-                    { title: "Ripple vs SEC: Legal expert predicts final ruling within 60 days", source: "XRP momentum" },
-                    { title: "BlackRock and Fidelity lead new wave of altcoin ETF filings", source: "Asset management" },
-                    { title: "Circle unveils native USDC on zkSync Era, gas fees drop 90%", source: "Layer 2 evolution" }
+                    { title: "Ripple vs SEC: Legal expert predicts final ruling within 60 days", source: "XRP momentum" }
                 ];
                 let html = '';
                 for(let item of cryptoFallback) {
-                    html += `
-                        <li>
-                            <a href="#" style="cursor:default;">₿ ${escapeHtml(item.title)}</a>
-                            <span class="news-meta">🔹 ${escapeHtml(item.source)}</span>
-                        </li>
-                    `;
+                    html += `<li><a href="#" style="cursor:default;">₿ ${escapeHtml(item.title)}</a><span class="news-meta">🔹 ${escapeHtml(item.source)}</span></li>`;
                 }
                 container.innerHTML = html;
             }
@@ -554,9 +535,7 @@
                 "BTC $70,121 | ETH $3,598 | SOL $161",
                 "BTC $68,990 | ETH $3,482 | SOL $153",
                 "BTC $71,205 | ETH $3,674 | SOL $168",
-                "BTC $69,340 | ETH $3,512 | SOL $149",
-                "BTC $72,100 | ETH $3,801 | SOL $172",
-                "BTC $68,540 | ETH $3,409 | SOL $145"
+                "BTC $69,340 | ETH $3,512 | SOL $149"
             ];
             let idx = 0;
             setInterval(() => {
@@ -567,24 +546,25 @@
             }, 19000);
         }
         
-        // ----- 6. CHATANGO INTEGRATION (FULLY WORKING) -----
+        // ----- 6. UPDATED CHATANGO INTEGRATION (NEW CONFIGURATION FROM USER) -----
         function loadChatangoWidget() {
             return new Promise((resolve, reject) => {
-                // Clean container if any previous script exists
                 const widgetContainer = document.getElementById('chatangoWidget');
                 if (!widgetContainer) return reject('No container');
-                widgetContainer.innerHTML = ''; // clear any leftover
+                widgetContainer.innerHTML = '';
                 
-                // Create the script element exactly as provided but with proper embed handling
+                // Create script element with the exact updated configuration
                 const script = document.createElement('script');
-                script.id = "cid0020000437396758463";
+                script.id = "cid0020000437397109464";
                 script.setAttribute('data-cfasync', 'false');
                 script.async = true;
                 script.src = "//st.chatango.com/js/gz/emb.js";
-                script.style.width = "250px";
-                script.style.height = "350px";
+                script.style.width = "100%";
+                script.style.height = "100%";
+                script.style.minWidth = "250px";
+                script.style.minHeight = "350px";
                 
-                // Chatango configuration object
+                // Updated config exactly as provided (without fwtickm, matching user specs)
                 const chatConfig = {
                     handle: "chat2000site",
                     arch: "js",
@@ -603,24 +583,33 @@
                         p: "10",
                         q: "33cc00",
                         r: 100,
-                        sbc: "33cc00",
-                        fwtickm: 1
+                        sbc: "33cc00"
                     }
                 };
                 
-                // Set the inner content as JSON string inside script tag (Chatango expects this)
                 script.textContent = JSON.stringify(chatConfig);
                 
-                // Append to container and also handle errors
+                // Responsive handling: ensure iframe scales on mobile
                 script.onload = () => {
-                    console.log("Chatango widget loaded");
+                    console.log("Chatango mobile widget loaded");
                     const chatStatusSpan = document.getElementById('chatStatus');
                     if(chatStatusSpan) chatStatusSpan.innerText = "ACTIVE";
+                    // Apply responsive fixes to any iframe created by Chatango
+                    setTimeout(() => {
+                        const iframes = widgetContainer.querySelectorAll('iframe');
+                        iframes.forEach(iframe => {
+                            iframe.style.width = '100%';
+                            iframe.style.maxWidth = '100%';
+                            iframe.style.height = 'auto';
+                            iframe.style.minHeight = '350px';
+                            iframe.style.borderRadius = '8px';
+                        });
+                    }, 500);
                     resolve();
                 };
                 script.onerror = (err) => {
                     console.error("Chatango load error", err);
-                    widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ CHAT OFFLINE // RETRY CONNECT</div>';
+                    widgetContainer.innerHTML = '<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ CHAT OFFLINE // RETRY</div>';
                     const chatStatusSpan = document.getElementById('chatStatus');
                     if(chatStatusSpan) chatStatusSpan.innerText = "STANDBY";
                     reject(err);
@@ -628,38 +617,45 @@
                 
                 widgetContainer.appendChild(script);
                 
-                // Also inject additional CSS to make chatango widget blend with matrix theme
+                // additional CSS to ensure mobile scaling
                 const style = document.createElement('style');
                 style.textContent = `
                     .chatango-wrapper iframe, 
-                    .chatango-wrapper object, 
-                    .chatango-widget {
-                        border-radius: 8px !important;
+                    .chatango-wrapper object {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        min-width: 220px !important;
+                        border-radius: 10px !important;
                         border: 1px solid #2b9a2b !important;
-                        background: #030a03 !important;
+                    }
+                    @media (max-width: 600px) {
+                        .chatango-wrapper iframe {
+                            min-height: 300px !important;
+                            height: 300px !important;
+                        }
                     }
                 `;
                 document.head.appendChild(style);
             });
         }
         
-        // retry mechanism for chat in case of network flakiness
         let chatLoadAttempts = 0;
         function ensureChatWidget() {
             loadChatangoWidget().catch((err) => {
-                console.warn("Chat load attempt failed, retrying in 8s", err);
+                console.warn("Chat load failed, retrying", err);
                 setTimeout(() => {
-                    if(chatLoadAttempts < 5) {
+                    if(chatLoadAttempts < 4) {
                         chatLoadAttempts++;
                         ensureChatWidget();
                     } else {
-                        document.getElementById('chatangoWidget').innerHTML = '<div style="color:#6f9e6f;text-align:center;padding:20px;">💬 CHAT NEXUS // RELOAD PAGE TO RECONNECT</div>';
+                        const widgetContainer = document.getElementById('chatangoWidget');
+                        if(widgetContainer) widgetContainer.innerHTML = '<div style="color:#6f9e6f;text-align:center;padding:20px;">💬 CHAT NEXUS // REFRESH TO RECONNECT</div>';
                     }
-                }, 8000);
+                }, 7000);
             });
         }
         
-        // ----- 7. REFRESH HANDLERS -----
+        // ----- 7. REFRESH HANDLERS & AUTO UPDATE -----
         let isRefreshing = false;
         async function refreshAllNews() {
             if (isRefreshing) return;
@@ -687,17 +683,16 @@
             setInterval(() => { refreshAllNews(); }, 25 * 60 * 1000);
         }
         
-        // ----- 8. INITIALIZE EVERYTHING FOREVER -----
+        // ----- 8. INITIALIZE EVERYTHING (FOREVER + MOBILE) -----
         async function init() {
             initLiveClock();
             bindRefreshButtons();
             initCryptoMarketTicker();
             await refreshAllNews();
             startAutoRefresh();
-            ensureChatWidget();  // load chatango widget with full config
-            // optional: update chat status style
+            ensureChatWidget();
             const titleEl = document.querySelector('title');
-            if(titleEl) titleEl.innerText = 'ANONNEWS // CYBER NEXUS // LIVE CHAT';
+            if(titleEl) titleEl.innerText = 'ANONNEWS // MOBILE CYBER HUB';
         }
         
         window.addEventListener('DOMContentLoaded', init);
